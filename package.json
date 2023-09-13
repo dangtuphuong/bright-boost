@@ -1,0 +1,14 @@
+{
+  "name": "bright-boost-app",
+  "version": "1.0.0",
+  "description": "Bright Boost App",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "Group 15 Swinburne 2023-HS2-COS60010",
+  "license": "ISC"
+}
