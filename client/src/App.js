@@ -1,17 +1,19 @@
 import React from "react";
 
 function App() {
-  const [data, setData] = React.useState();
+  const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    fetch("/api")
+    fetch("http://localhost:3001/api")
       .then((res) => res.json())
-      .then((data) => setData(data.message));
+      .then((data) => setData(data));
   }, []);
 
-  return (
+  return(
     <div>
-      <h1>{!data ? "Loading..." : data}</h1>
+      {data.length > 0
+        ? data.map((subject, i) => <div key={i}>{subject.name}</div>)
+        : "Loading..."}
     </div>
   );
 }
