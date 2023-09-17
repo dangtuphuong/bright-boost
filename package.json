@@ -4,7 +4,7 @@
   "description": "Bright Boost App",
   "main": "index.js",
   "scripts": {
-    "server": "npm run dev --prefix server",
+    "server": "npm run start --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
@@ -17,5 +17,8 @@
     "@babel/preset-env": "7.22.20",
     "body-parser": "1.20.2",
     "nodemon": "3.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
   }
 }
