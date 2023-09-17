@@ -10,5 +10,12 @@
   },
   "keywords": [],
   "author": "Group 15 Swinburne 2023-HS2-COS60010",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "7.22.20",
+    "@babel/node": "7.22.19",
+    "@babel/preset-env": "7.22.20",
+    "body-parser": "1.20.2",
+    "nodemon": "3.0.1"
+  }
 }
