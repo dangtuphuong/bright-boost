@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import classNames from "classnames";
+import Spinner from "react-bootstrap/Spinner";
 import "./login-page.scss";
-
 import AuthService from "../services/auth-service";
 
 const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -25,10 +25,7 @@ export default function LoginPage() {
       setErrors({ email: false, password: false });
       console.log(email, password);
       AuthService.login(email, password).then(
-        () => {
-          navigate("/home");
-          window.location.reload();
-        },
+        () => navigate("/home"),
         (error) => {
           console.log(error);
           setLoading(false);
@@ -65,8 +62,8 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
-              <Button variant="primary" onClick={onSubmit}>
-                Sign In
+              <Button onClick={onSubmit}>
+                {loading ? <Spinner size="sm" animation="border" /> : "Sign In"}
               </Button>
             </Form>
           </div>
