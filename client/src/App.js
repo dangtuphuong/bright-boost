@@ -1,21 +1,21 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
+import LoginPage from "./routes/login-page";
+import HomePage from "./routes/home-page";
 
-function App() {
-  const [data, setData] = React.useState([]);
-
+const App = () => {
   React.useEffect(() => {
-    fetch("/api")
+    fetch("http://localhost:3001/api")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => console.log(data));
   }, []);
 
-  return(
-    <div>
-      {data.length > 0
-        ? data.map((subject, i) => <div key={i}>{subject.name}</div>)
-        : "Loading..."}
-    </div>
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
   );
-}
+};
 
 export default App;
