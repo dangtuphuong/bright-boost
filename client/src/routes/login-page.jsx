@@ -2,31 +2,41 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import classNames from "classnames";
 import "./login-page.scss";
 
 import AuthService from "../services/auth-service";
+
+const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 export default function LoginPage() {
   let navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [errors, setErrors] = useState({ email: false, password: false });
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    console.log(email, password);
-
-    AuthService.login(email, password).then(
-      () => {
-        navigate("/home");
-        window.location.reload();
-      },
-      (error) => {
-        console.log(error);
-        setLoading(false);
-      }
-    );
+    const isEmailValid = !!email?.length && emailRegEx.test(email);
+    const isPwValid = !!password?.length;
+    if (isEmailValid && isPwValid) {
+      setLoading(true);
+      setErrors({ email: false, password: false });
+      console.log(email, password);
+      AuthService.login(email, password).then(
+        () => {
+          navigate("/home");
+          window.location.reload();
+        },
+        (error) => {
+          console.log(error);
+          setLoading(false);
+        }
+      );
+    } else {
+      setErrors({ email: !isEmailValid, password: !isPwValid });
+    }
   };
 
   return (
@@ -40,6 +50,7 @@ export default function LoginPage() {
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
+                  className={classNames({ "is-invalid": errors.email })}
                   type="email"
                   placeholder="Enter email"
                   onChange={(e) => setEmail(e.target.value)}
@@ -48,6 +59,7 @@ export default function LoginPage() {
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                  className={classNames({ "is-invalid": errors.password })}
                   type="password"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
