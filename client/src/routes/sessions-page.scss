@@ -1,0 +1,11 @@
+.session-item {
+  width: 50%;
+  margin-bottom: 30px;
+  text-decoration: none;
+  .session-item-card {
+    transition: box-shadow 0.3s;
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

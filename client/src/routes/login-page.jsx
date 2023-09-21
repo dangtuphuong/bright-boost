@@ -1,11 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
-import "./login-page.scss";
 import AuthService from "../services/auth-service";
+
+import "./login-page.scss";
 
 const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
