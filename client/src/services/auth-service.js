@@ -10,7 +10,7 @@ const login = (username, password) =>
     return res.data;
   });
 
-const logout = () => localStorage.removeItem("user");
+const logout = async () => localStorage.removeItem("user");
 
 const getCurrentUser = () => JSON.parse(localStorage.getItem("user"));
 
