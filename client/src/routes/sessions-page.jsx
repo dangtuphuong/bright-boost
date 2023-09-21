@@ -13,16 +13,22 @@ const SessionsPage = () => {
       <div className="container">
         <h1>SessionsPage</h1>
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <Card className="session-item">
-            <Link to="/sessions/123">
-              <Button variant="link">View Session #123</Button>
-            </Link>
-          </Card>
-          <Card className="session-item">
-            <Link to="/sessions/124">
-              <Button variant="link">View Session #124</Button>
-            </Link>
-          </Card>
+          <Link className="session-item" to="/sessions/123">
+            <Card className="session-item-card">
+              <Card.Body>
+                <Card.Title>Session #123</Card.Title>
+                <Card.Text>Session #123 Details</Card.Text>
+              </Card.Body>
+            </Card>
+          </Link>
+          <Link className="session-item" to="/sessions/124">
+            <Card className="session-item-card">
+              <Card.Body>
+                <Card.Title>Session #124</Card.Title>
+                <Card.Text>Session #124 Details</Card.Text>
+              </Card.Body>
+            </Card>
+          </Link>
         </div>
       </div>
     </NavBar>
