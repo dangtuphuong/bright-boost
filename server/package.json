@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Bright Boost App Server",
-  "main": "index.js",
+  "main": "App.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
-    "dev": "nodemon index.js"
+    "start": "nodemon --exec babel-node App.js",
+    "dev": "nodemon App.js"
   },
   "author": "Group 15 Swinburne 2023-HS2-COS60010",
   "license": "ISC",
