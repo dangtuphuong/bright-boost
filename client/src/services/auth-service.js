@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3001/api/";
 
-const login = (username, password) =>
-  axios.post(API_URL + "login", { username, password }).then((res) => {
+const login = (email, password) =>
+  axios.post(API_URL + "login/student_login", { email, password }).then((res) => {
     if (res.data.accessToken) {
       localStorage.setItem("user", JSON.stringify(res.data));
     }

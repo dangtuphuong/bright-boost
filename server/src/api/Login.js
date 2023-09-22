@@ -1,11 +1,11 @@
-import express from "express";
+import express, { query } from "express";
 import Student from "../model/Student";
 import Tutor from "../model/Tutor";
 
 const router = express.Router();
 
-router.get("/student_login", async function (req, res, next) {
-    const { email, password } = req.query;
+router.post("/student_login", async function (req, res, next) {
+    const { email, password } = req.body;
     try {
       const student = await Student.findOne({
         attributes: ["id", "email", "name", "birthday", "gender", "address"],
