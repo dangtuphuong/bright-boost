@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import AuthService from "../services/auth-service";
+import { toast } from "../components/Toast";
 
 import "./login-page.scss";
 
@@ -30,13 +31,13 @@ export default function LoginPage() {
     if (isEmailValid && isPwValid) {
       setLoading(true);
       setErrors({ email: false, password: false });
-      AuthService.login({ email, password, role }).then(
-        () => navigate("/home"),
-        (error) => {
+      AuthService.login({ email, password, role })
+        .then(() => navigate("/home"))
+        .catch((error) => {
           console.log(error);
           setLoading(false);
-        }
-      );
+          toast.success(error?.message);
+        });
     } else {
       setErrors({ email: !isEmailValid, password: !isPwValid });
     }
@@ -48,9 +49,9 @@ export default function LoginPage() {
         <div className="col loginImg"></div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
           <div>
-            <h3>Welcome Back!</h3>
+            <h3 className="mb-4 text-center">Welcome Back to Bright Boost!</h3>
             <Form className="formWrap">
-              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Group className="mb-4" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   className={classNames({ "is-invalid": errors.email })}
@@ -59,7 +60,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e?.target?.value)}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Group className="mb-4" controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   className={classNames({ "is-invalid": errors.password })}
@@ -68,7 +69,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e?.target?.value)}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicRole">
+              <Form.Group className="mb-4" controlId="formBasicRole">
                 {ROLES.map(({ label, value }) => (
                   <Form.Check
                     key={value}
@@ -83,9 +84,15 @@ export default function LoginPage() {
                   />
                 ))}
               </Form.Group>
-              <Button onClick={onSubmit}>
-                {loading ? <Spinner size="sm" animation="border" /> : "Sign In"}
-              </Button>
+              <Form.Group className="d-flex justify-content-center">
+                <Button className="mb-2 sign-in-button" onClick={onSubmit}>
+                  {loading ? (
+                    <Spinner size="sm" animation="border" />
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
+              </Form.Group>
             </Form>
           </div>
         </div>
