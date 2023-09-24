@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
 import Card from "react-bootstrap/Card";
 
 import "./sessions-page.scss";
