@@ -10,10 +10,16 @@ import "./login-page.scss";
 
 const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+const ROLES = [
+  { label: "Student", value: "student" },
+  { label: "Tutor", value: "tutor" },
+];
+
 export default function LoginPage() {
   let navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [role, setRole] = useState(ROLES[0].value);
   const [errors, setErrors] = useState({ email: false, password: false });
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +30,7 @@ export default function LoginPage() {
     if (isEmailValid && isPwValid) {
       setLoading(true);
       setErrors({ email: false, password: false });
-      console.log(email, password);
-      AuthService.login(email, password).then(
+      AuthService.login({ email, password, role }).then(
         () => navigate("/home"),
         (error) => {
           console.log(error);
@@ -51,7 +56,7 @@ export default function LoginPage() {
                   className={classNames({ "is-invalid": errors.email })}
                   type="email"
                   placeholder="Enter email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e?.target?.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -60,8 +65,23 @@ export default function LoginPage() {
                   className={classNames({ "is-invalid": errors.password })}
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e?.target?.value)}
                 />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formBasicRole">
+                {ROLES.map(({ label, value }) => (
+                  <Form.Check
+                    key={value}
+                    id={value}
+                    inline
+                    type="radio"
+                    label={label}
+                    name="role"
+                    value={value}
+                    checked={value === role}
+                    onChange={(e) => setRole(e?.target?.value)}
+                  />
+                ))}
               </Form.Group>
               <Button onClick={onSubmit}>
                 {loading ? <Spinner size="sm" animation="border" /> : "Sign In"}
