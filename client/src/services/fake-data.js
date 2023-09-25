@@ -1,5 +1,18 @@
 import moment from "moment";
 
+function pickRandomItems(list) {
+  const numberOfItems = Math.floor(Math.random() * 2) + 2; // Generates either 2 or 3
+  const selectedItems = [];
+  while (selectedItems.length < numberOfItems) {
+    const randomIndex = Math.floor(Math.random() * list.length);
+    const randomItem = list[randomIndex];
+    if (!selectedItems.includes(randomItem)) {
+      selectedItems.push(randomItem);
+    }
+  }
+  return selectedItems;
+}
+
 function generateFakeTimetable() {
   const daysOfWeek = [
     moment().startOf("isoweek"),
@@ -8,6 +21,7 @@ function generateFakeTimetable() {
     moment().startOf("isoweek").add(3, "d"),
     moment().startOf("isoweek").add(4, "d"),
   ];
+  const tutors = ["Tutor A", "Tutor B", "Tutor C", "Tutor D", "Tutor E"];
   const subjects = [
     "Math",
     "Science",
@@ -17,30 +31,14 @@ function generateFakeTimetable() {
     "Chemistry",
   ];
 
-  function pickRandomTutors() {
-    const tutors = ["Tutor A", "Tutor B", "Tutor C", "Tutor D", "Tutor E"];
-    const numberOfTutors = Math.floor(Math.random() * 2) + 2; // Generates either 2 or 3
-    const selectedTutors = [];
-
-    while (selectedTutors.length < numberOfTutors) {
-      const randomIndex = Math.floor(Math.random() * tutors.length);
-      const randomTutor = tutors[randomIndex];
-      if (!selectedTutors.includes(randomTutor)) {
-        selectedTutors.push(randomTutor);
-      }
-    }
-
-    return selectedTutors;
-  }
-
   const timetable = [];
 
   daysOfWeek.forEach((day) => {
     timetable.push({
       day,
-      tutors: pickRandomTutors()?.map((t) => ({
+      tutors: pickRandomItems(tutors)?.map((t) => ({
         name: t,
-        subjects: subjects.slice(Math.floor(Math.random() * 6)),
+        subjects: pickRandomItems(subjects),
       })),
     });
   });

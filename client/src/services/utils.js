@@ -21,3 +21,10 @@ export const COLORS = [
   "DFCCFB",
   "AEC3AE",
 ];
+
+export const pluralize = (list) =>
+  list?.length
+    ? list.slice(0, list?.length - 1).join(", ") +
+      " and " +
+      list[list?.length - 1]
+    : "";
