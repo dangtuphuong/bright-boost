@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize("bright_boost_schema", "admin", "Daovuhoangnam99", {
+const sequelize = new Sequelize("bright_boost", "root", "Daovuhoangnam99", {
     dialect: "mysql",
-    host: "db-instance.crruajoumg3g.ap-southeast-2.rds.amazonaws.com",
+    host: "34.129.92.138",
     port: "3306"
   });
 

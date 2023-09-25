@@ -1,4 +1,4 @@
-import express, { query } from "express";
+import express from "express";
 import Student from "../model/Student";
 import Tutor from "../model/Tutor";
 
@@ -26,7 +26,7 @@ router.post("/student_login", async function (req, res, next) {
 });
 
 router.post("/tutor_login", async function (req, res, next) {
-    const { email, password } = req.query
+    const { email, password } = req.body;
     try {
         const tutor = await Tutor.findOne({
         attributes: ["id", "email", "name", "birthday", "gender", "address"],
