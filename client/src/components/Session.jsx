@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 import "./Session.scss";
 
@@ -51,15 +52,30 @@ const Session = ({ className, session, onRegister = null }) => {
               </div>
             ))}
           </div>
-          {onRegister && (
-            <Button
-              className={classNames("register-button", { loading: loading })}
-              variant="outline-primary"
-              onClick={handleRegister}
-            >
-              {loading ? <Spinner size="sm" animation="border" /> : "Register"}
-            </Button>
-          )}
+          <div>
+            {typeof session?.count === "number" && (
+              <ProgressBar
+                className="mb-4"
+                variant="success"
+                now={session?.count}
+              />
+            )}
+            {onRegister && (
+              <Button
+                className={classNames("register-button", {
+                  loading: loading,
+                })}
+                variant="outline-primary"
+                onClick={handleRegister}
+              >
+                {loading ? (
+                  <Spinner size="sm" animation="border" />
+                ) : (
+                  "Register"
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </Card.Body>
     </Card>

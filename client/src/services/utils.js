@@ -11,15 +11,15 @@ export const ICONS = [
 ];
 
 export const COLORS = [
-  "71C9CE",
-  "8785A2",
-  "F38181",
-  "F67280",
-  "FCE38A",
-  "B4846C",
-  "FFD9B7",
-  "DFCCFB",
-  "AEC3AE",
+  "ee6055",
+  "60d394",
+  "ffd97d",
+  "5aa9e6",
+  "957fef",
+  "ffee93",
+  "ff9b85",
+  "70d6ff",
+  "ff9770",
 ];
 
 export const getRandomInt = (max) => Math.floor(Math.random() * max);

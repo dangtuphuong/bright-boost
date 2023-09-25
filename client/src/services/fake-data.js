@@ -41,6 +41,7 @@ function generateFakeTimetable() {
         name: t,
         subjects: pickRandomItems(subjects),
       })),
+      count: Math.random() * 100,
     });
   });
 

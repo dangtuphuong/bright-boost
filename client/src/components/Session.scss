@@ -4,8 +4,10 @@
   .tutors {
     flex: 1;
   }
+  .progress-bar {
+    background-color: #60d394 !important;
+  }
   .register-button {
-    align-self: center;
     visibility: hidden;
     width: 120px;
     &.loading {
