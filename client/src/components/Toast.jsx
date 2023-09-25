@@ -20,7 +20,7 @@ const ToastMessage = ({ text, textHeader = null, show, onHide, type }) => {
 
 const createToast =
   (type) =>
-  (text, textHeader = null, duration = 7000) => {
+  (text, textHeader = null, duration = 3000) => {
     const toastContainer = document.createElement("div");
     document.body.appendChild(toastContainer);
     const toastRoot = createRoot(toastContainer);

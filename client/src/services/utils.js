@@ -22,6 +22,8 @@ export const COLORS = [
   "AEC3AE",
 ];
 
+export const getRandomInt = (max) => Math.floor(Math.random() * max);
+
 export const pluralize = (list) =>
   list?.length
     ? list.slice(0, list?.length - 1).join(", ") +

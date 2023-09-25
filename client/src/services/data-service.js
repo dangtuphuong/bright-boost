@@ -11,10 +11,27 @@ const getTimetable = () => {
   );
 };
 
-const getSession = () => {
+const getYourSessions = () => {
+  return new Promise((resolve, reject) =>
+    setTimeout(() => resolve(timetable), 1000)
+  );
+};
+
+const onRegister = () => {
+  return new Promise((resolve, reject) =>
+    setTimeout(() => resolve({ data: {}, status: 200 }), 1000)
+  );
+};
+
+const getSessionDetail = () => {
   return axios.get(API_URL + "session", { headers: authHeader() });
 };
 
-const DataService = { getTimetable, getSession };
+const DataService = {
+  getTimetable,
+  getYourSessions,
+  onRegister,
+  getSessionDetail,
+};
 
 export default DataService;

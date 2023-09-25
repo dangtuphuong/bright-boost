@@ -7,6 +7,10 @@
   .register-button {
     align-self: center;
     visibility: hidden;
+    width: 120px;
+    &.loading {
+      visibility: visible;
+    }
   }
   &:hover {
     .register-button {

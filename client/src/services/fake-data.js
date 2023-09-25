@@ -35,6 +35,7 @@ function generateFakeTimetable() {
 
   daysOfWeek.forEach((day) => {
     timetable.push({
+      id: day.format("DD"),
       day,
       tutors: pickRandomItems(tutors)?.map((t) => ({
         name: t,
