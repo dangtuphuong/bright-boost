@@ -10,9 +10,10 @@ import Session from "../components/Session";
 import DataService from "../services/data-service";
 
 const HomePage = () => {
-  const currentUser = AuthService.getCurrentUser();
   const [timetable, setTimetable] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  console.log(timetable);
 
   useEffect(() => {
     setLoading(true);

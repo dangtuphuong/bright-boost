@@ -9,6 +9,7 @@ const getTimetable = () => {
   return new Promise((resolve, reject) =>
     setTimeout(() => resolve(timetable), 1000)
   );
+  // return axios.get(API_URL + "timetable/schedule", { headers: authHeader() });
 };
 
 const getYourSessions = () => {

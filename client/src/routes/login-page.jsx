@@ -36,7 +36,7 @@ export default function LoginPage() {
         .catch((error) => {
           console.log(error);
           setLoading(false);
-          toast.success(error?.message);
+          toast.error(error?.message);
         });
     } else {
       setErrors({ email: !isEmailValid, password: !isPwValid });
