@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -12,6 +12,12 @@ const NavBar = ({ children }) => {
   const navigate = useNavigate();
 
   const currentUser = AuthService.getCurrentUser();
+
+  useEffect(() => {
+    if (!currentUser?.accessToken) {
+      navigate("/login");
+    }
+  }, [currentUser?.accessToken]);
 
   const onLogout = useCallback((e) => {
     e.preventDefault();

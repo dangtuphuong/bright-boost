@@ -1,34 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
-import Card from "react-bootstrap/Card";
+import Spinner from "react-bootstrap/Spinner";
 
 import "./sessions-page.scss";
 
 import NavBar from "../components/NavBar";
+import Session from "../components/Session";
+import DataService from "../services/data-service";
 
 const SessionsPage = () => {
+  const [sessions, setSessions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    DataService.getYourSessions()
+      .then((data) => setSessions(data))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <NavBar>
       <div className="container">
-        <h1>SessionsPage</h1>
+        <h2 className="mb-4 mt-4">Your Sessions</h2>
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <Link className="session-item" to="/sessions/123">
-            <Card className="session-item-card">
-              <Card.Body>
-                <Card.Title>Session #123</Card.Title>
-                <Card.Text>Session #123 Details</Card.Text>
-              </Card.Body>
-            </Card>
-          </Link>
-          <Link className="session-item" to="/sessions/124">
-            <Card className="session-item-card">
-              <Card.Body>
-                <Card.Title>Session #124</Card.Title>
-                <Card.Text>Session #124 Details</Card.Text>
-              </Card.Body>
-            </Card>
-          </Link>
+          {loading ? (
+            <Spinner animation="border" />
+          ) : (
+            sessions?.map((session) => (
+              <Link
+                key={session?.id}
+                className="session-item"
+                to={`/sessions/${session?.id}`}
+              >
+                <Session className="session-item-card" session={session} />
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </NavBar>
