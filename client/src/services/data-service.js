@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-import { timetable } from "./fake-data";
+import { timetable, students, questions } from "./fake-data";
 
 const API_URL = "http://localhost:3001/api/";
 
@@ -25,7 +25,10 @@ const onRegister = () => {
 };
 
 const getSessionDetail = () => {
-  return axios.get(API_URL + "session", { headers: authHeader() });
+  // return axios.get(API_URL + "session", { headers: authHeader() });
+  return new Promise((resolve, reject) =>
+    setTimeout(() => resolve({ students, questions }), 1000)
+  );
 };
 
 const DataService = {

@@ -13,6 +13,8 @@ function pickRandomItems(list) {
   return selectedItems;
 }
 
+const tutors = ["Tutor A", "Tutor B", "Tutor C", "Tutor D", "Tutor E"];
+
 function generateFakeTimetable() {
   const daysOfWeek = [
     moment().startOf("isoweek"),
@@ -21,7 +23,7 @@ function generateFakeTimetable() {
     moment().startOf("isoweek").add(3, "d"),
     moment().startOf("isoweek").add(4, "d"),
   ];
-  const tutors = ["Tutor A", "Tutor B", "Tutor C", "Tutor D", "Tutor E"];
+
   const subjects = [
     "Math",
     "Science",
@@ -50,4 +52,70 @@ function generateFakeTimetable() {
 
 const timetable = generateFakeTimetable();
 
-export { timetable };
+const students = [
+  {
+    id: 1,
+    name: "John Smith",
+    email: "john.smith@example.com",
+  },
+  {
+    id: 2,
+    name: "Emily Johnson",
+    email: "emily.johnson@example.com",
+  },
+  {
+    id: 3,
+    name: "Michael Davis",
+    email: "michael.davis@example.com",
+  },
+  {
+    id: 4,
+    name: "Sophia Brown",
+    email: "sophia.brown@example.com",
+  },
+  {
+    id: 5,
+    name: "William Lee",
+    email: "william.lee@example.com",
+  },
+  {
+    id: 6,
+    name: "Olivia Wilson",
+    email: "olivia.wilson@example.com",
+  },
+  {
+    id: 7,
+    name: "James Martinez",
+    email: "james.martinez@example.com",
+  },
+  {
+    id: 8,
+    name: "Emma Taylor",
+    email: "emma.taylor@example.com",
+  },
+  {
+    id: 9,
+    name: "Daniel Anderson",
+    email: "daniel.anderson@example.com",
+  },
+  {
+    id: 10,
+    name: "Ava Jackson",
+    email: "ava.jackson@example.com",
+  },
+];
+
+const questions = students.map((student) => {
+  const isAnswered = Math.random() < 0.5;
+  return {
+    id: student.id,
+    content: `Question from ${student.name}: What is the answer?`,
+    studentName: student.name,
+    isAnswered,
+    tutorName: isAnswered
+      ? tutors[Math.floor(Math.random() * tutors.length)]
+      : null,
+  };
+});
+
+export { timetable, students, questions };
