@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -29,18 +29,20 @@ const HomePage = () => {
         <div className="row">
           <div className="col-8">
             <h2 className="mb-4 mt-4">Timetable</h2>
-            {loading ? (
-              <Spinner animation="border" />
-            ) : (
-              timetable?.map((day) => (
-                <div key={day?.id} className="mb-3">
-                  <h5 className="mb-3">
-                    {moment(day?.day).format("dddd DD.MM.YYYY")}
-                  </h5>
-                  <Session session={day} onRegister={onRegister} />
-                </div>
-              ))
-            )}
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              {loading ? (
+                <Spinner animation="border" />
+              ) : (
+                timetable?.map((day) => (
+                  <div key={day?.id} className="mb-3 w-100">
+                    <h5 className="mb-3">
+                      {moment(day?.day).format("dddd DD.MM.YYYY")}
+                    </h5>
+                    <Session session={day} onRegister={onRegister} />
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

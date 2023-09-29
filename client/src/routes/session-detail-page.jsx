@@ -36,53 +36,59 @@ const SessionDetailPage = () => {
         <div className="row">
           <div className="col">
             <h4 className="mb-4">Student List</h4>
-            {loading ? (
-              <Spinner animation="border" />
-            ) : (
-              students?.map((student) => (
-                <Card className="mb-3" key={student?.id}>
-                  <Card.Body>
-                    <div>{student?.name}</div>
-                    <div className="color-light">{student?.email}</div>
-                  </Card.Body>
-                </Card>
-              ))
-            )}
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              {loading ? (
+                <Spinner animation="border" />
+              ) : (
+                students?.map((student) => (
+                  <Card className="mb-3 w-100" key={student?.id}>
+                    <Card.Body>
+                      <div>{student?.name}</div>
+                      <div className="color-light">{student?.email}</div>
+                    </Card.Body>
+                  </Card>
+                ))
+              )}
+            </div>
           </div>
           <div className="col">
             <h4 className="mb-4">Question List</h4>
-            {loading ? (
-              <Spinner animation="border" />
-            ) : (
-              questions?.map((question) => (
-                <Card
-                  key={question?.id}
-                  className={classNames("mb-3", {
-                    answered: question?.isAnswered,
-                  })}
-                  style={
-                    question?.isAnswered
-                      ? {
-                          backgroundColor: "rgba(214, 234, 223, 0.4)",
-                        }
-                      : {}
-                  }
-                >
-                  <Card.Body>
-                    <div>{question?.content}</div>
-                    <div className="d-flex justify-content-between">
-                      <div className="color-light">{`From ${question?.studentName}`}</div>
-                      {question?.tutorName && (
-                        <div className="color-light">{`Answered by ${question?.tutorName}`}</div>
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              {loading ? (
+                <Spinner animation="border" />
+              ) : (
+                questions?.map((question) => (
+                  <Card
+                    key={question?.id}
+                    className={classNames("mb-3 w-100", {
+                      answered: question?.isAnswered,
+                    })}
+                    style={
+                      question?.isAnswered
+                        ? {
+                            backgroundColor: "rgba(214, 234, 223, 0.4)",
+                          }
+                        : {}
+                    }
+                  >
+                    <Card.Body>
+                      <div>{question?.content}</div>
+                      <div className="d-flex justify-content-between">
+                        <div className="color-light">{`From ${question?.studentName}`}</div>
+                        {question?.tutorName && (
+                          <div className="color-light">{`Answered by ${question?.tutorName}`}</div>
+                        )}
+                      </div>
+                      {!!question?.isAnswered && (
+                        <i className="material-icons check-icon">
+                          check_circle
+                        </i>
                       )}
-                    </div>
-                    {!!question?.isAnswered && (
-                      <i className="material-icons check-icon">check_circle</i>
-                    )}
-                  </Card.Body>
-                </Card>
-              ))
-            )}
+                    </Card.Body>
+                  </Card>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
