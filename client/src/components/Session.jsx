@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import React, { memo, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -9,6 +8,17 @@ import "./Session.scss";
 import { ICONS, COLORS, pluralize, getRandomInt } from "../services/utils";
 import { toast } from "../components/Toast";
 import classNames from "classnames";
+
+const Icon = memo(() => (
+  <i
+    className="material-icons icon"
+    style={{
+      backgroundColor: `#${COLORS[getRandomInt(COLORS?.length)]}`,
+    }}
+  >
+    {ICONS[getRandomInt(ICONS?.length)]}
+  </i>
+));
 
 const Session = ({ className, session, onRegister = null }) => {
   const [loading, setLoading] = useState(false);
@@ -33,14 +43,7 @@ const Session = ({ className, session, onRegister = null }) => {
           <div className="tutors">
             {session?.tutors?.map((tutor) => (
               <div key={tutor?.name} className="tutor-wrap">
-                <i
-                  className="material-icons icon"
-                  style={{
-                    backgroundColor: `#${COLORS[getRandomInt(COLORS?.length)]}`,
-                  }}
-                >
-                  {ICONS[getRandomInt(ICONS?.length)]}
-                </i>
+                <Icon />
                 <div className="tutor">
                   <div>
                     <strong>{tutor?.name}</strong>
@@ -68,11 +71,7 @@ const Session = ({ className, session, onRegister = null }) => {
                 variant="outline-primary"
                 onClick={handleRegister}
               >
-                {loading ? (
-                  <Spinner size="sm" animation="border" />
-                ) : (
-                  "Register"
-                )}
+                {loading ? "Registering..." : "Register"}
               </Button>
             )}
           </div>

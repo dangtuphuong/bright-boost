@@ -9,7 +9,7 @@
   }
   .register-button {
     visibility: hidden;
-    width: 120px;
+    width: 150px;
     &.loading {
       visibility: visible;
     }
@@ -36,9 +36,4 @@
     margin: 0 20px 0 40px;
     color: white;
   }
-}
-
-.color-light {
-  color: #9d9d9d;
-  font-weight: 300;
 }
