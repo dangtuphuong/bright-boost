@@ -4,11 +4,11 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import classNames from "classnames";
 
-import "./session-detail-page.scss";
-
 import NavBar from "../components/NavBar";
 import DataService from "../services/data-service";
 import { toast } from "../components/Toast";
+
+import "./session-detail-page.scss";
 
 const SessionDetailPage = () => {
   const { id } = useParams();
@@ -58,12 +58,19 @@ const SessionDetailPage = () => {
                 <Card
                   key={question?.id}
                   className={classNames("mb-3", {
-                    isAnswered: question?.isAnswered,
+                    answered: question?.isAnswered,
                   })}
+                  style={
+                    question?.isAnswered
+                      ? {
+                          backgroundColor: "rgba(214, 234, 223, 0.4)",
+                        }
+                      : {}
+                  }
                 >
                   <Card.Body>
                     <div>{question?.content}</div>
-                    <div>
+                    <div className="d-flex justify-content-between">
                       <div className="color-light">{`From ${question?.studentName}`}</div>
                       {question?.tutorName && (
                         <div className="color-light">{`Answered by ${question?.tutorName}`}</div>
