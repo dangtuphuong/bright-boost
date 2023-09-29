@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -11,7 +11,7 @@ import AuthService from "../services/auth-service";
 const NavBar = ({ children }) => {
   const navigate = useNavigate();
 
-  const currentUser = AuthService.getCurrentUser();
+  const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
 
   useEffect(() => {
     if (!currentUser?.accessToken) {
@@ -41,7 +41,10 @@ const NavBar = ({ children }) => {
             {currentUser ? (
               <Nav>
                 <Navbar.Text>Signed in as: </Navbar.Text>
-                <NavDropdown title={currentUser?.email}>
+                <NavDropdown
+                  align="end"
+                  title={currentUser?.name || currentUser?.email}
+                >
                   <NavDropdown.Item onClick={onLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
               </Nav>

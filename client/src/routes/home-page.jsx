@@ -4,7 +4,6 @@ import Spinner from "react-bootstrap/Spinner";
 
 import "./home-page.scss";
 
-import AuthService from "../services/auth-service";
 import NavBar from "../components/NavBar";
 import Session from "../components/Session";
 import DataService from "../services/data-service";
