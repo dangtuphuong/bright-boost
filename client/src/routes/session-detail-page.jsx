@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
+import Button from "react-bootstrap/Button";
 import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
@@ -33,26 +34,50 @@ const SessionDetailPage = () => {
     <NavBar>
       <div className="container">
         <h2 className="mb-4 mt-4">Session ID: {id}</h2>
-        <div className="row">
-          <div className="col">
-            <h4 className="mb-4">Student List</h4>
+        <div className="row mb-4">
+          <div className="col-4 gx-5">
+            <h4 className="mb-4 text-center">Student List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
               {loading ? (
                 <Spinner animation="border" />
               ) : (
                 students?.map((student) => (
-                  <Card className="mb-3 w-100" key={student?.id}>
+                  <Card
+                    key={student?.id}
+                    className="mb-3 w-100 student-card"
+                    style={
+                      student?.isAttended ? {} : { backgroundColor: "#eee" }
+                    }
+                  >
                     <Card.Body>
                       <div>{student?.name}</div>
                       <div className="color-light">{student?.email}</div>
+                      <div className="attend-buttons">
+                        <Button
+                          className="attend-button"
+                          variant="outline-danger"
+                        >
+                          <i className="material-icons">close</i>
+                        </Button>
+                        <Button
+                          className={classNames("attend-button", {
+                            isAttended: student?.isAttended,
+                          })}
+                          variant={`${
+                            student?.isAttended ? "" : "outline-"
+                          }success`}
+                        >
+                          <i className="material-icons">check</i>
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 ))
               )}
             </div>
           </div>
-          <div className="col">
-            <h4 className="mb-4">Question List</h4>
+          <div className="col-8 gx-5 question-list">
+            <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
               {loading ? (
                 <Spinner animation="border" />
@@ -60,9 +85,7 @@ const SessionDetailPage = () => {
                 questions?.map((question) => (
                   <Card
                     key={question?.id}
-                    className={classNames("mb-3 w-100", {
-                      answered: question?.isAnswered,
-                    })}
+                    className="mb-3 w-100"
                     style={
                       question?.isAnswered
                         ? {

@@ -2,5 +2,37 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #60d394;
+  color: #198754;
+}
+
+.question-list {
+  border-left: 1px solid #dadada;
+  min-height: 100vh;
+}
+
+.attend-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  .attend-button {
+    margin-left: 5px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    &.isAttended {
+      visibility: visible;
+    }
+  }
+}
+
+.student-card {
+  &:hover {
+    .attend-button {
+      visibility: visible;
+    }
+  }
 }
