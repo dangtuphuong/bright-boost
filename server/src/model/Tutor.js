@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../bin/www";
 
-const Student = sequelize.define("tutor", {
+const Tutor = sequelize.define("tutor", {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -32,4 +32,4 @@ const Student = sequelize.define("tutor", {
     tableName: "tutor", timestamps: false
 })
 
-export default Student;
+export default Tutor;
