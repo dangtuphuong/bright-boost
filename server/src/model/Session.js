@@ -8,14 +8,28 @@ const Session = sequelize.define('session', {
         primaryKey: true,
         autoIncrement: true
     },
-    schedule: {
+    date: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    start: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    end: {
         type: DataTypes.STRING,
         allowNull: false
     },
     status: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    is_cancelled: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
+}, { 
+    tableName: "session", timestamps: false
 });
 
 export default Session;
