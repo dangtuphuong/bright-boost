@@ -15,7 +15,7 @@ const SessionsPage = () => {
   useEffect(() => {
     setLoading(true);
     DataService.getYourSessions()
-      .then((data) => setSessions(data))
+      .then((data) => setSessions(data?.data))
       .finally(() => setLoading(false));
   }, []);
 

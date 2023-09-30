@@ -25,8 +25,8 @@ export const COLORS = [
 export const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 export const pluralize = (list) =>
-  list?.length
+  list?.length > 1
     ? list.slice(0, list?.length - 1).join(", ") +
       " and " +
       list[list?.length - 1]
-    : "";
+    : list;
