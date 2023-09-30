@@ -38,7 +38,7 @@ const Session = ({ className, session, onRegister = null }) => {
     <Card className={`card-item ${className}`}>
       <Card.Body>
         <div className="d-flex">
-          <div className="color-light">3:30pm to 5:30pm</div>
+          <div className="color-light">{`${session?.start} to ${session?.end}`}</div>
           <div className="tutors">
             {session?.TutorDetails?.map((tutor) => (
               <div key={tutor?.tutorId} className="tutor-wrap">
@@ -47,7 +47,7 @@ const Session = ({ className, session, onRegister = null }) => {
                   <div>
                     <strong>{tutor?.tutor?.name}</strong>
                     {!!tutor?.tutor?.email && (
-                      <span className="color-light text-small font-italic">{` (${tutor?.tutor?.email})`}</span>
+                      <span className="color-light text-small text-italic ">{` (${tutor?.tutor?.email})`}</span>
                     )}
                   </div>
                   <div className="color-light">
