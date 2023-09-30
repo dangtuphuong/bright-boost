@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
 import Spinner from "react-bootstrap/Spinner";
 
 import "./home-page.scss";
@@ -17,7 +16,7 @@ const HomePage = () => {
   useEffect(() => {
     setLoading(true);
     DataService.getTimetable()
-      .then((data) => setTimetable(data))
+      .then((data) => setTimetable(data?.data))
       .finally(() => setLoading(false));
   }, []);
 
@@ -33,12 +32,10 @@ const HomePage = () => {
               {loading ? (
                 <Spinner animation="border" />
               ) : (
-                timetable?.map((day) => (
-                  <div key={day?.id} className="mb-3 w-100">
-                    <h5 className="mb-3">
-                      {moment(day?.day).format("dddd DD.MM.YYYY")}
-                    </h5>
-                    <Session session={day} onRegister={onRegister} />
+                timetable?.map((item) => (
+                  <div key={item?.id} className="mb-3 w-100">
+                    <h5 className="mb-3">{item?.date}</h5>
+                    <Session session={item} onRegister={onRegister} />
                   </div>
                 ))
               )}

@@ -1,7 +1,6 @@
 import React, { memo, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import ProgressBar from "react-bootstrap/ProgressBar";
 
 import "./Session.scss";
 
@@ -41,28 +40,26 @@ const Session = ({ className, session, onRegister = null }) => {
         <div className="d-flex">
           <div className="color-light">3:30pm to 5:30pm</div>
           <div className="tutors">
-            {session?.tutors?.map((tutor) => (
-              <div key={tutor?.name} className="tutor-wrap">
+            {session?.TutorDetails?.map((tutor) => (
+              <div key={tutor?.tutorId} className="tutor-wrap">
                 <Icon />
                 <div className="tutor">
                   <div>
-                    <strong>{tutor?.name}</strong>
+                    <strong>{tutor?.tutor?.name}</strong>
+                    {!!tutor?.tutor?.email && (
+                      <span className="color-light text-small font-italic">{` (${tutor?.tutor?.email})`}</span>
+                    )}
                   </div>
                   <div className="color-light">
-                    {`Areas of expertise: ${pluralize(tutor?.subjects)}`}
+                    {`Areas of expertise: ${pluralize(
+                      tutor?.tutor?.SubjectDetails?.map((i) => i?.subject?.name)
+                    )}`}
                   </div>
                 </div>
               </div>
             ))}
           </div>
           <div>
-            {typeof session?.count === "number" && (
-              <ProgressBar
-                className="mb-4"
-                variant="success"
-                now={session?.count}
-              />
-            )}
             {onRegister && (
               <Button
                 className={classNames("register-button", {

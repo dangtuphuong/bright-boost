@@ -6,10 +6,7 @@ import { timetable, students, questions } from "./fake-data";
 const API_URL = "http://localhost:3001/api/";
 
 const getTimetable = () => {
-  return new Promise((resolve, reject) =>
-    setTimeout(() => resolve(timetable), 1000)
-  );
-  // return axios.get(API_URL + "timetable/schedule", { headers: authHeader() });
+  return axios.get(API_URL + "schedule", { headers: authHeader() });
 };
 
 const getYourSessions = () => {
