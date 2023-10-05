@@ -27,6 +27,11 @@ const Student = sequelize.define("student", {
     address: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    sessionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, { 
     tableName: "student", timestamps: false
