@@ -1,0 +1,15 @@
+.nav-link.btn {
+    margin-right: 10px;
+    background-color: none;
+}
+
+.nav-link.btn:hover {
+    background-color: #e0115f;   
+    transform: scale(1.05);     
+    transition: background-color 0.3s, transform 0.3s;  
+}
+
+.nav-link.btn:active {
+    background-color: #e0115f !important;
+    color: #e0115f Im !important;
+}
