@@ -27,6 +27,11 @@ const Session = sequelize.define('session', {
     is_cancelled: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    num_students: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, { 
     tableName: "session", timestamps: false
