@@ -3,6 +3,6 @@ import Attendant from "../model/Attendant";
 import Student from "../model/Student";
 import Tutor from "../model/Tutor";
 
-router = express.Router();
+const router = express.Router();
 
 module.exports = router;
