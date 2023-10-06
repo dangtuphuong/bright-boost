@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
+import QuestionInput from "../components/QuestionInput";
 import DataService from "../services/data-service";
 import { toast } from "../components/Toast";
 import { isEmpty } from "../services/utils";
@@ -26,7 +27,7 @@ const SessionDetailPage = () => {
       .catch((err) => toast.error(err?.message))
       .finally(() => setStudentsLoading(false));
     setQuestionsLoading(true);
-    DataService.getQuestionList({ sessionId: id })
+    DataService.getQuestionList({ sessionId: Number(id) })
       .then((data) => setQuestions(isEmpty(data?.data) ? [] : data?.data))
       .catch((err) => toast.error(err?.message))
       .finally(() => setQuestionsLoading(false));
@@ -83,6 +84,7 @@ const SessionDetailPage = () => {
           <div className="col-8 gx-5 question-list">
             <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
+              <QuestionInput sessionId={Number(id)} />
               {questionsLoading ? (
                 <Spinner animation="border" />
               ) : (
