@@ -8,24 +8,28 @@ import classNames from "classnames";
 import NavBar from "../components/NavBar";
 import DataService from "../services/data-service";
 import { toast } from "../components/Toast";
+import { isEmpty } from "../services/utils";
 
 import "./session-detail-page.scss";
 
 const SessionDetailPage = () => {
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState([]);
+  const [studentsLoading, setStudentsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    setStudentsLoading(true);
     DataService.getSessionDetail()
-      .then((data) => {
-        setQuestions(data?.questions || []);
-        setStudents(data?.students || []);
-      })
+      .then((data) => setStudents(data?.students || []))
       .catch((err) => toast.error(err?.message))
-      .finally(() => setLoading(false));
+      .finally(() => setStudentsLoading(false));
+    setQuestionsLoading(true);
+    DataService.getQuestionList({ sessionId: id })
+      .then((data) => setQuestions(isEmpty(data?.data) ? [] : data?.data))
+      .catch((err) => toast.error(err?.message))
+      .finally(() => setQuestionsLoading(false));
   }, []);
 
   console.log(questions);
@@ -38,7 +42,7 @@ const SessionDetailPage = () => {
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
-              {loading ? (
+              {studentsLoading ? (
                 <Spinner animation="border" />
               ) : (
                 students?.map((student) => (
@@ -79,7 +83,7 @@ const SessionDetailPage = () => {
           <div className="col-8 gx-5 question-list">
             <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
-              {loading ? (
+              {questionsLoading ? (
                 <Spinner animation="border" />
               ) : (
                 questions?.map((question) => (

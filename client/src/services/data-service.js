@@ -26,11 +26,16 @@ const getSessionDetail = () => {
   );
 };
 
+const getQuestionList = (params) => {
+  return axios.get(API_URL + "question", { params, headers: authHeader() });
+};
+
 const DataService = {
   getTimetable,
   getYourSessions,
   onRegister,
   getSessionDetail,
+  getQuestionList,
 };
 
 export default DataService;
