@@ -46,7 +46,7 @@ export default function LoginPage() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col loginImg"></div>
+        <div className="col loginImg"><img src="./images/hero-image.png"></img></div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
           <div>
             <h3 className="mb-4 text-center">Welcome Back to Bright Boost!</h3>
