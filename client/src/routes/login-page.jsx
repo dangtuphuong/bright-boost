@@ -34,7 +34,6 @@ export default function LoginPage() {
       AuthService.login({ email, password, role })
         .then(() => navigate("/home"))
         .catch((error) => {
-          console.log(error);
           setLoading(false);
           toast.error(error?.message);
         });

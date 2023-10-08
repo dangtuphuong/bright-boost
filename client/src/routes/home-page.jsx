@@ -11,16 +11,12 @@ const HomePage = () => {
   const [timetable, setTimetable] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(timetable);
-
   useEffect(() => {
     setLoading(true);
     DataService.getTimetable()
       .then((data) => setTimetable(data?.data))
       .finally(() => setLoading(false));
   }, []);
-
-  const onRegister = () => DataService.onRegister();
 
   return (
     <NavBar>
@@ -35,7 +31,7 @@ const HomePage = () => {
                 timetable?.map((item) => (
                   <div key={item?.id} className="mb-3 w-100">
                     <h5 className="mb-3">{item?.date}</h5>
-                    <Session session={item} onRegister={onRegister} />
+                    <Session session={item} />
                   </div>
                 ))
               )}

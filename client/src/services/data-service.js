@@ -9,13 +9,29 @@ const getTimetable = () => {
   return axios.get(API_URL + "schedule", { headers: authHeader() });
 };
 
-const getYourSessions = () => {
-  return axios.get(API_URL + "schedule", { headers: authHeader() });
+const getAvailableSessions = () => {
+  return axios.get(API_URL + "schedule/available", { headers: authHeader() });
 };
 
-const onRegister = () => {
-  return new Promise((resolve, reject) =>
-    setTimeout(() => resolve({ data: {}, status: 200 }), 1000)
+const onJoinSession = ({ sessionId, userId, role }) => {
+  return axios.post(
+    API_URL + `session/join/${role}`,
+    {
+      sessionId,
+      ...(role === "student" ? { studentId: userId } : { tutorId: userId }),
+    },
+    { headers: authHeader() }
+  );
+};
+
+const onLeaveSession = ({ sessionId, userId, role }) => {
+  return axios.post(
+    API_URL + `session/leave/${role}`,
+    {
+      sessionId,
+      ...(role === "student" ? { studentId: userId } : { tutorId: userId }),
+    },
+    { headers: authHeader() }
   );
 };
 
@@ -38,8 +54,9 @@ const postQuestion = (params) => {
 
 const DataService = {
   getTimetable,
-  getYourSessions,
-  onRegister,
+  getAvailableSessions,
+  onJoinSession,
+  onLeaveSession,
   getSessionDetail,
   getQuestionList,
   postQuestion,

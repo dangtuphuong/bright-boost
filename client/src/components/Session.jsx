@@ -1,4 +1,5 @@
 import React, { memo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
@@ -19,15 +20,22 @@ const Icon = memo(() => (
   </i>
 ));
 
-const Session = ({ className, session, onRegister = null }) => {
+const Session = ({ className, session, onJoinSession = null }) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
-    if (onRegister) {
+  const handleJoin = (e) => (sessionId) => {
+    e?.stopPropagation();
+    if (onJoinSession) {
       setLoading(true);
-      onRegister()
+      onJoinSession()
         .then(() => {
           toast.success("You have enrolled successfully!");
+          navigate(`/sessions/${sessionId}`);
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err?.message);
           setLoading(false);
         })
         .finally(() => setLoading(false));
@@ -60,15 +68,15 @@ const Session = ({ className, session, onRegister = null }) => {
             ))}
           </div>
           <div>
-            {onRegister && (
+            {onJoinSession && (
               <Button
                 className={classNames("register-button", {
                   loading: loading,
                 })}
                 variant="outline-primary"
-                onClick={handleRegister}
+                onClick={() => handleJoin(session?.id)}
               >
-                {loading ? "Registering..." : "Register"}
+                {loading ? "Joining..." : "Join"}
               </Button>
             )}
           </div>

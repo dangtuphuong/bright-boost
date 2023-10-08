@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
@@ -8,17 +8,27 @@ import classNames from "classnames";
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
 import DataService from "../services/data-service";
+import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
 import { isEmpty } from "../services/utils";
 
 import "./session-detail-page.scss";
 
 const SessionDetailPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [students, setStudents] = useState([]);
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+
+  const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
+
+  useEffect(() => {
+    onGetStudents();
+    onGetQuestions();
+  }, []);
 
   const onGetStudents = () => {
     setStudentsLoading(true);
@@ -36,15 +46,32 @@ const SessionDetailPage = () => {
       .finally(() => setQuestionsLoading(false));
   };
 
-  useEffect(() => {
-    onGetStudents();
-    onGetQuestions();
-  }, []);
+  const onLeaveSession = () => {
+    setLeaving(true);
+    DataService.onLeaveSession({
+      sessionId: Number(id),
+      userId: currentUser?.id,
+      role: currentUser?.role,
+    })
+      .then(() => {
+        setLeaving(false);
+        navigate("/home");
+      })
+      .catch((err) => {
+        toast.error(err?.message);
+        setLeaving(false);
+      });
+  };
 
   return (
     <NavBar>
       <div className="container">
-        <h2 className="mb-4 mt-4">Session ID: {id}</h2>
+        <div className="d-flex justify-content-between align-items-center">
+          <h2 className="mb-4 mt-4">Session ID: {id}</h2>
+          <Button variant="danger" onClick={onLeaveSession}>
+            {leaving ? "Leaving" : "Leave"}
+          </Button>
+        </div>
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
