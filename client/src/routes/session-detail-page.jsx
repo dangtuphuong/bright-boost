@@ -20,20 +20,26 @@ const SessionDetailPage = () => {
   const [questions, setQuestions] = useState([]);
   const [questionsLoading, setQuestionsLoading] = useState(false);
 
-  useEffect(() => {
+  const onGetStudents = () => {
     setStudentsLoading(true);
     DataService.getSessionDetail()
       .then((data) => setStudents(data?.students || []))
       .catch((err) => toast.error(err?.message))
       .finally(() => setStudentsLoading(false));
+  };
+
+  const onGetQuestions = () => {
     setQuestionsLoading(true);
     DataService.getQuestionList({ sessionId: Number(id) })
       .then((data) => setQuestions(isEmpty(data?.data) ? [] : data?.data))
       .catch((err) => toast.error(err?.message))
       .finally(() => setQuestionsLoading(false));
-  }, []);
+  };
 
-  console.log(questions);
+  useEffect(() => {
+    onGetStudents();
+    onGetQuestions();
+  }, []);
 
   return (
     <NavBar>
@@ -84,39 +90,39 @@ const SessionDetailPage = () => {
           <div className="col-8 gx-5 question-list">
             <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
-              <QuestionInput sessionId={Number(id)} />
-              {questionsLoading ? (
-                <Spinner animation="border" />
-              ) : (
-                questions?.map((question) => (
-                  <Card
-                    key={question?.id}
-                    className="mb-3 w-100"
-                    style={
-                      question?.isAnswered
-                        ? {
-                            backgroundColor: "rgba(214, 234, 223, 0.4)",
-                          }
-                        : {}
-                    }
-                  >
-                    <Card.Body>
-                      <div>{question?.content}</div>
-                      <div className="d-flex justify-content-between">
-                        <div className="color-light">{`From ${question?.studentName}`}</div>
-                        {question?.tutorName && (
-                          <div className="color-light">{`Answered by ${question?.tutorName}`}</div>
+              <QuestionInput sessionId={Number(id)} onSubmit={onGetQuestions} />
+              <div className="w-100 mt-3">
+                {questionsLoading ? (
+                  <Spinner animation="border" />
+                ) : (
+                  questions?.map((question) => (
+                    <Card
+                      key={question?.id}
+                      className="mb-3 w-100"
+                      style={
+                        question?.is_answered
+                          ? { backgroundColor: "rgba(214, 234, 223, 0.4)" }
+                          : {}
+                      }
+                    >
+                      <Card.Body>
+                        <div>{question?.content}</div>
+                        <div className="d-flex justify-content-between">
+                          <div className="color-light">{`From ${question?.student?.name}`}</div>
+                          {question?.tutor?.name && (
+                            <div className="color-light">{`Answered by ${question?.tutor?.name}`}</div>
+                          )}
+                        </div>
+                        {!!question?.is_answered && (
+                          <i className="material-icons check-icon">
+                            check_circle
+                          </i>
                         )}
-                      </div>
-                      {!!question?.isAnswered && (
-                        <i className="material-icons check-icon">
-                          check_circle
-                        </i>
-                      )}
-                    </Card.Body>
-                  </Card>
-                ))
-              )}
+                      </Card.Body>
+                    </Card>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
