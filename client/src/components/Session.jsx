@@ -2,6 +2,7 @@ import React, { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 import "./Session.scss";
 
@@ -20,17 +21,40 @@ const Icon = memo(() => (
   </i>
 ));
 
-const Session = ({ className, session, onJoinSession = null }) => {
+const Session = ({
+  className,
+  session,
+  onJoinSession = null,
+  onStartSession = null,
+}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [starting, setStarting] = useState(false);
+
+  const handleStart = (e) => (sessionId) => {
+    e?.stopPropagation();
+    if (onStartSession) {
+      setStarting(true);
+      onStartSession(session?.id)
+        .then(() => {
+          toast.success("You have started the session successfully!");
+          setStarting(false);
+        })
+        .catch((err) => {
+          toast.error(err?.message);
+          setStarting(false);
+        })
+        .finally(() => setStarting(false));
+    }
+  };
 
   const handleJoin = (e) => (sessionId) => {
     e?.stopPropagation();
     if (onJoinSession) {
       setLoading(true);
-      onJoinSession()
+      onJoinSession(session?.id)
         .then(() => {
-          toast.success("You have enrolled successfully!");
+          toast.success("You have joined the session successfully!");
           navigate(`/sessions/${sessionId}`);
           setLoading(false);
         })
@@ -68,6 +92,24 @@ const Session = ({ className, session, onJoinSession = null }) => {
             ))}
           </div>
           <div>
+            {typeof session?.num_students === "number" && (
+              <ProgressBar
+                className="mb-3"
+                variant="success"
+                now={session?.num_students / 25}
+              />
+            )}
+            {onStartSession && (
+              <Button
+                className={classNames("register-button", {
+                  loading: starting,
+                })}
+                variant="outline-primary"
+                onClick={() => handleStart(session?.id)}
+              >
+                {starting ? "Starting..." : "Start"}
+              </Button>
+            )}
             {onJoinSession && (
               <Button
                 className={classNames("register-button", {

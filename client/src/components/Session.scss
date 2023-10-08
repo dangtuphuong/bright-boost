@@ -10,6 +10,7 @@
   .register-button {
     visibility: hidden;
     width: 150px;
+    margin-left: 10px;
     &.loading {
       visibility: visible;
     }

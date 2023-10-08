@@ -13,6 +13,14 @@ const getAvailableSessions = () => {
   return axios.get(API_URL + "schedule/available", { headers: authHeader() });
 };
 
+const onStartSession = ({ sessionId }) => {
+  return axios.post(
+    API_URL + "session/start",
+    { sessionId },
+    { headers: authHeader() }
+  );
+};
+
 const onJoinSession = ({ sessionId, userId, role }) => {
   return axios.post(
     API_URL + `session/join/${role}`,
@@ -55,6 +63,7 @@ const postQuestion = (params) => {
 const DataService = {
   getTimetable,
   getAvailableSessions,
+  onStartSession,
   onJoinSession,
   onLeaveSession,
   getSessionDetail,

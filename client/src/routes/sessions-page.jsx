@@ -23,6 +23,9 @@ const SessionsPage = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const onStartSession = (sessionId) =>
+    DataService.onStartSession({ sessionId });
+
   const onJoinSession = (sessionId) =>
     DataService.onJoinSession({
       sessionId,
@@ -39,17 +42,16 @@ const SessionsPage = () => {
             <Spinner animation="border" />
           ) : (
             sessions?.map((session) => (
-              <div className="mb-3 w-75">
+              <div key={session?.id} className="mb-3 w-75">
                 <h5 className="mb-3">{session?.date}</h5>
-                <Link
-                  key={session?.id}
-                  className="session-item"
-                  to={`/sessions/${session?.id}`}
-                >
+                <Link className="session-item" to={`/sessions/${session?.id}`}>
                   <Session
                     className="session-item-card"
                     session={session}
-                    onJoinSession={() => onJoinSession(session?.id)}
+                    onJoinSession={
+                      currentUser?.role === "student" ? null : onJoinSession
+                    }
+                    onStartSession={onStartSession}
                   />
                 </Link>
               </div>
