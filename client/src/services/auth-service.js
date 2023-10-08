@@ -6,8 +6,8 @@ const login = ({ email, password, role = "student" }) =>
   axios
     .post(API_URL + `login/${role}_login`, { email, password })
     .then((res) => {
-      if (res.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(res.data));
+      if (res?.data?.accessToken) {
+        localStorage.setItem("user", JSON.stringify({ role, ...res?.data }));
       }
       return res.data;
     });

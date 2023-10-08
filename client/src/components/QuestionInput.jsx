@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import DataService from "../services/data-service";
+import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
 
 import "./QuestionInput.scss";
@@ -13,7 +14,16 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const disabled = !content?.length || !studentId?.length;
+  const disabled = !content?.length || !studentId;
+
+  const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
+  const isStudent = currentUser?.role === "student";
+
+  useState(() => {
+    if (isStudent) {
+      setStudentId(currentUser?.id);
+    }
+  }, [isStudent, currentUser?.id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,14 +43,16 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
 
   return (
     <Form className="w-100 question-input-wrapper">
-      <Form.Group className="mb-3">
-        <Form.Label>Student ID</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Student ID"
-          onChange={(e) => setStudentId(e?.target?.value)}
-        />
-      </Form.Group>
+      {!isStudent && (
+        <Form.Group className="mb-3">
+          <Form.Label>Student ID</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Student ID"
+            onChange={(e) => setStudentId(Number(e?.target?.value))}
+          />
+        </Form.Group>
+      )}
       <Form.Group className="mb-3">
         <Form.Label>Question</Form.Label>
         <Form.Control
