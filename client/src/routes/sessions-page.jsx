@@ -39,17 +39,20 @@ const SessionsPage = () => {
             <Spinner animation="border" />
           ) : (
             sessions?.map((session) => (
-              <Link
-                key={session?.id}
-                className="session-item"
-                to={`/sessions/${session?.id}`}
-              >
-                <Session
-                  className="session-item-card"
-                  session={session}
-                  onJoinSession={() => onJoinSession(session?.id)}
-                />
-              </Link>
+              <div className="mb-3 w-75">
+                <h5 className="mb-3">{session?.date}</h5>
+                <Link
+                  key={session?.id}
+                  className="session-item"
+                  to={`/sessions/${session?.id}`}
+                >
+                  <Session
+                    className="session-item-card"
+                    session={session}
+                    onJoinSession={() => onJoinSession(session?.id)}
+                  />
+                </Link>
+              </div>
             ))
           )}
         </div>

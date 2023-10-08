@@ -53,7 +53,7 @@ const Session = ({ className, session, onJoinSession = null }) => {
                 <Icon />
                 <div className="tutor">
                   <div>
-                    <strong>{tutor?.tutor?.name}</strong>
+                    <strong>Tutor: {tutor?.tutor?.name}</strong>
                     {!!tutor?.tutor?.email && (
                       <span className="color-light text-small text-italic ">{` (${tutor?.tutor?.email})`}</span>
                     )}
