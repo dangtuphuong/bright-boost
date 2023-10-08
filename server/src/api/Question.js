@@ -10,13 +10,13 @@ router.get("/", async function(req, res, next) {
     const { sessionId } = req.query;
     try {
         
-        const startDay = new Date;
+        const startDay = new Date();
         startDay.setHours(0, 0, 0);
         
         const endDay = new Date();
         endDay.setHours(23, 59, 59);
 
-        const questions = Question.findAll({
+        const questions = await Question.findAll({
             include: [
                 {
                     model: Student,
@@ -30,7 +30,7 @@ router.get("/", async function(req, res, next) {
             where: {
                 sessionId: sessionId,
                 time_publish: {
-                    [Op.between]: [startDay, endDay] 
+                    [Op.between]: [startDay.getTime(), endDay.getTime()] 
                 }
             }
         });
@@ -93,7 +93,8 @@ router.post("/answer/end", async function(req, res, next) {
             await Question.update(
                 { 
                     is_answer: 2,
-                    time_end: now
+                    time_end: now,
+                    tutorId
                 }
                 ,{
                     where: {
@@ -113,17 +114,16 @@ router.post("/add", async function(req, res, next) {
     const { sessionId, studentId, content } = req.body;
     try {
 
-        const now = Date.now();
         await Question.create({
             studentId,
             sessionId,
             tutorId: 1,
             content,
-            is_answer: 0,
-            time_publish: now
+            is_answered: 0,
+            time_publish: Date.now(),
+            content: content
         });
 
-        Question.save();
         res.status(200).json({message: 'Successful add new question'});
 
     } catch (err) {

@@ -44,15 +44,15 @@ const Question = sequelize.define('question', {
         allowNull: false
     },
     time_publish: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     time_start: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: true
     },
     time_end: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: true
     }
 }, { 
