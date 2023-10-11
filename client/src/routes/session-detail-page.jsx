@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
@@ -23,6 +24,8 @@ const SessionDetailPage = () => {
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [ending, setEnding] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
 
@@ -78,6 +81,38 @@ const SessionDetailPage = () => {
         setEnding(false);
       });
   };
+
+  const onAnswering = (question) => {
+    setShowModal(true);
+    setCurrentQuestion(question);
+  };
+
+  const onFinishAnswer = () => {
+    setShowModal(false);
+    setCurrentQuestion(null);
+  };
+
+  const handleStartAnswer = (question) =>
+    DataService.onStartAnswer({ id: question?.id, tutorId: currentUser?.id })
+      .then(() => {
+        toast.success("Question is answering..");
+        onAnswering(question);
+      })
+      .catch((err) => toast.error(err.message));
+
+  const handleEndAnswer = () =>
+    DataService.onEndAnswer({
+      id: currentQuestion?.id,
+      tutorId: currentUser?.id,
+    })
+      .then(() => {
+        toast.success("Question is answered!");
+        onFinishAnswer();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+        onFinishAnswer();
+      });
 
   return (
     <NavBar>
@@ -154,6 +189,11 @@ const SessionDetailPage = () => {
                           ? { backgroundColor: "rgba(214, 234, 223, 0.4)" }
                           : {}
                       }
+                      onDoubleClick={
+                        currentUser?.role === "tutor"
+                          ? () => handleStartAnswer(question)
+                          : null
+                      }
                     >
                       <Card.Body>
                         <div>{question?.content}</div>
@@ -175,6 +215,23 @@ const SessionDetailPage = () => {
               </div>
             </div>
           </div>
+          <Modal
+            show={showModal}
+            onHide={handleEndAnswer}
+            backdrop="static"
+            keyboard={false}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Answering...</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{currentQuestion?.content}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleEndAnswer}>
+                End
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     </NavBar>

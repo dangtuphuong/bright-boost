@@ -68,6 +68,18 @@ const postQuestion = (params) => {
   });
 };
 
+const onStartAnswer = (params) => {
+  return axios.post(API_URL + "question/answer/start", params, {
+    headers: authHeader(),
+  });
+};
+
+const onEndAnswer = (params) => {
+  return axios.post(API_URL + "question/answer/end", params, {
+    headers: authHeader(),
+  });
+};
+
 const DataService = {
   getTimetable,
   getAvailableSessions,
@@ -77,6 +89,8 @@ const DataService = {
   onLeaveSession,
   getSessionDetail,
   getQuestionList,
+  onStartAnswer,
+  onEndAnswer,
   postQuestion,
 };
 
