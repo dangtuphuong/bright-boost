@@ -10,8 +10,8 @@ import { toast } from "../components/Toast";
 import "./QuestionInput.scss";
 
 const QuestionInput = ({ sessionId, onSubmit }) => {
-  const [studentId, setStudentId] = useState(null);
-  const [content, setContent] = useState(null);
+  const [studentId, setStudentId] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
   const disabled = !content?.length || !studentId;
@@ -31,8 +31,8 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
     DataService.postQuestion({ sessionId, studentId, content })
       .then(() => {
         setLoading(false);
-        setStudentId(null);
-        setContent(null);
+        setStudentId("");
+        setContent("");
         onSubmit();
       })
       .catch((err) => {
@@ -49,6 +49,7 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
           <Form.Control
             type="text"
             placeholder="Student ID"
+            value={studentId}
             onChange={(e) => setStudentId(Number(e?.target?.value))}
           />
         </Form.Group>
@@ -58,6 +59,7 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
         <Form.Control
           as="textarea"
           rows={3}
+          value={content}
           onChange={(e) => setContent(e?.target?.value)}
         />
       </Form.Group>
