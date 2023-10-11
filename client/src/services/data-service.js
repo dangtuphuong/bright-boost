@@ -21,6 +21,14 @@ const onStartSession = ({ sessionId }) => {
   );
 };
 
+const onEndSession = ({ sessionId }) => {
+  return axios.post(
+    API_URL + "session/end",
+    { sessionId },
+    { headers: authHeader() }
+  );
+};
+
 const onJoinSession = ({ sessionId, userId, role }) => {
   return axios.post(
     API_URL + `session/join/${role}`,
@@ -64,6 +72,7 @@ const DataService = {
   getTimetable,
   getAvailableSessions,
   onStartSession,
+  onEndSession,
   onJoinSession,
   onLeaveSession,
   getSessionDetail,

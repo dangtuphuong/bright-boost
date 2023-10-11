@@ -8,12 +8,6 @@ import SessionDetailPage from "./routes/session-detail-page";
 import "./App.scss";
 
 const App = () => {
-  React.useEffect(() => {
-    fetch("http://localhost:3001/api")
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
-
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />

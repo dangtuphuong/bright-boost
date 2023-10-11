@@ -22,6 +22,7 @@ const SessionDetailPage = () => {
   const [questions, setQuestions] = useState([]);
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const [ending, setEnding] = useState(false);
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
 
@@ -63,14 +64,36 @@ const SessionDetailPage = () => {
       });
   };
 
+  const onEndSession = () => {
+    setEnding(true);
+    DataService.onEndSession({
+      sessionId: Number(id),
+    })
+      .then(() => {
+        setEnding(false);
+        navigate("/home");
+      })
+      .catch((err) => {
+        toast.error(err?.message);
+        setEnding(false);
+      });
+  };
+
   return (
     <NavBar>
       <div className="container">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-4 mt-4">Session ID: {id}</h2>
-          <Button variant="danger" onClick={onLeaveSession}>
-            {leaving ? "Leaving" : "Leave"}
-          </Button>
+          <div>
+            <Button variant="warning" onClick={onLeaveSession}>
+              {leaving ? "Leaving" : "Leave Session"}
+            </Button>
+            {currentUser?.role === "tutor" && (
+              <Button className="ms-3" variant="danger" onClick={onEndSession}>
+                {ending ? "Ending" : "End Session"}
+              </Button>
+            )}
+          </div>
         </div>
         <div className="row mb-4">
           <div className="col-4 gx-5">

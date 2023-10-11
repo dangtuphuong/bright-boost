@@ -31,11 +31,11 @@ const Session = ({
   const [loading, setLoading] = useState(false);
   const [starting, setStarting] = useState(false);
 
-  const handleStart = (e) => (sessionId) => {
+  const handleStart = (e, sessionId) => {
     e?.stopPropagation();
     if (onStartSession) {
       setStarting(true);
-      onStartSession(session?.id)
+      onStartSession(sessionId)
         .then(() => {
           toast.success("You have started the session successfully!");
           setStarting(false);
@@ -48,7 +48,7 @@ const Session = ({
     }
   };
 
-  const handleJoin = (e) => (sessionId) => {
+  const handleJoin = (e, sessionId) => {
     e?.stopPropagation();
     if (onJoinSession) {
       setLoading(true);
@@ -105,7 +105,7 @@ const Session = ({
                   loading: starting,
                 })}
                 variant="outline-primary"
-                onClick={() => handleStart(session?.id)}
+                onClick={(e) => handleStart(e, session?.id)}
               >
                 {starting ? "Starting..." : "Start"}
               </Button>
@@ -116,7 +116,7 @@ const Session = ({
                   loading: loading,
                 })}
                 variant="outline-primary"
-                onClick={() => handleJoin(session?.id)}
+                onClick={(e) => handleJoin(e, session?.id)}
               >
                 {loading ? "Joining..." : "Join"}
               </Button>

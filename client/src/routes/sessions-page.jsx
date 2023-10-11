@@ -17,14 +17,10 @@ const SessionsPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    // TODO change to available sessions
-    DataService.getTimetable()
+    DataService.getAvailableSessions()
       .then((data) => setSessions(data?.data))
       .finally(() => setLoading(false));
   }, []);
-
-  const onStartSession = (sessionId) =>
-    DataService.onStartSession({ sessionId });
 
   const onJoinSession = (sessionId) =>
     DataService.onJoinSession({
@@ -40,22 +36,18 @@ const SessionsPage = () => {
         <div className="d-flex flex-column justify-content-center align-items-center">
           {loading ? (
             <Spinner animation="border" />
-          ) : (
+          ) : sessions?.length ? (
             sessions?.map((session) => (
               <div key={session?.id} className="mb-3 w-75">
                 <h5 className="mb-3">{session?.date}</h5>
-                <Link className="session-item" to={`/sessions/${session?.id}`}>
-                  <Session
-                    className="session-item-card"
-                    session={session}
-                    onJoinSession={
-                      currentUser?.role === "student" ? null : onJoinSession
-                    }
-                    onStartSession={onStartSession}
-                  />
-                </Link>
+                <Session session={session} onJoinSession={onJoinSession} />
               </div>
             ))
+          ) : (
+            <div className="align-self-start">
+              There are no available sessions to join at the moment. Please come
+              back later!
+            </div>
           )}
         </div>
       </div>
