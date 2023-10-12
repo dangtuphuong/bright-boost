@@ -89,7 +89,7 @@ export default function LoginPage() {
                 ))}
               </Form.Group>
               <Form.Group className="d-flex justify-content-center">
-                <Button className="mb-2 sign-in-button" onClick={onSubmit}>
+                <Button className="mb-2 submit-button" onClick={onSubmit}>
                   {loading ? (
                     <Spinner size="sm" animation="border" />
                   ) : (

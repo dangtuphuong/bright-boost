@@ -30,3 +30,5 @@ export const pluralize = (list) =>
       " and " +
       list[list?.length - 1]
     : list;
+
+export const isEmpty = (data) => !data?.length;
