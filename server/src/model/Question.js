@@ -21,7 +21,7 @@ const Question = sequelize.define('question', {
     },
     tutorId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Tutor,
             key: 'id'
