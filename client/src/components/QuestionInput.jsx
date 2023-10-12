@@ -28,7 +28,11 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    DataService.postQuestion({ sessionId, studentId, content })
+    DataService.postQuestion({
+      sessionId,
+      studentId: Number(studentId),
+      content,
+    })
       .then(() => {
         setLoading(false);
         setStudentId("");
@@ -50,7 +54,7 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
             type="text"
             placeholder="Student ID"
             value={studentId}
-            onChange={(e) => setStudentId(Number(e?.target?.value))}
+            onChange={(e) => setStudentId(e?.target?.value)}
           />
         </Form.Group>
       )}
