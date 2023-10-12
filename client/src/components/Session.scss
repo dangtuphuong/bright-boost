@@ -13,6 +13,9 @@
     &.loading {
       visibility: visible;
     }
+    & ~ .register-button {
+      margin-left: 10px;
+    }
   }
   &:hover {
     .register-button {

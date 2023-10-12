@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
 import "./home-page.scss";
@@ -6,12 +6,13 @@ import "./home-page.scss";
 import NavBar from "../components/NavBar";
 import Session from "../components/Session";
 import DataService from "../services/data-service";
+import AuthService from "../services/auth-service";
 
 const HomePage = () => {
   const [timetable, setTimetable] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(timetable);
+  const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
 
   useEffect(() => {
     setLoading(true);
@@ -20,7 +21,8 @@ const HomePage = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const onRegister = () => DataService.onRegister();
+  const onStartSession = (sessionId) =>
+    DataService.onStartSession({ sessionId });
 
   return (
     <NavBar>
@@ -35,7 +37,12 @@ const HomePage = () => {
                 timetable?.map((item) => (
                   <div key={item?.id} className="mb-3 w-100">
                     <h5 className="mb-3">{item?.date}</h5>
-                    <Session session={item} onRegister={onRegister} />
+                    <Session
+                      session={item}
+                      onStartSession={
+                        currentUser?.role === "tutor" && onStartSession
+                      }
+                    />
                   </div>
                 ))
               )}

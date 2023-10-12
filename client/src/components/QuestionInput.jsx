@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import DataService from "../services/data-service";
+import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
 
-const QuestionInput = ({ sessionId }) => {
-  const [studentId, setStudentId] = useState(null);
-  const [content, setContent] = useState(null);
+import "./QuestionInput.scss";
+
+const QuestionInput = ({ sessionId, onSubmit }) => {
+  const [studentId, setStudentId] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e) => {
+  const disabled = !content?.length || !studentId;
+
+  const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
+  const isStudent = currentUser?.role === "student";
+
+  useState(() => {
+    if (isStudent) {
+      setStudentId(currentUser?.id);
+    }
+  }, [isStudent, currentUser?.id]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     DataService.postQuestion({ sessionId, studentId, content })
-      .then(() => setLoading(false))
+      .then(() => {
+        setLoading(false);
+        setStudentId("");
+        setContent("");
+        onSubmit();
+      })
       .catch((err) => {
         setLoading(false);
         toast.error(err?.message);
@@ -23,28 +42,33 @@ const QuestionInput = ({ sessionId }) => {
   };
 
   return (
-    <Form className="w-100">
-      <Form.Group className="mb-3">
-        <Form.Label>Student ID</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Student ID"
-          onChange={(e) => setStudentId(e?.target?.value)}
-        />
-      </Form.Group>
+    <Form className="w-100 question-input-wrapper">
+      {!isStudent && (
+        <Form.Group className="mb-3">
+          <Form.Label>Student ID</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Student ID"
+            value={studentId}
+            onChange={(e) => setStudentId(Number(e?.target?.value))}
+          />
+        </Form.Group>
+      )}
       <Form.Group className="mb-3">
         <Form.Label>Question</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
+          value={content}
           onChange={(e) => setContent(e?.target?.value)}
         />
       </Form.Group>
       <Form.Group className="d-flex justify-content-end">
         <Button
-          disabled={!content?.length || !studentId?.length}
-          className="mb-3 submit-button"
-          onClick={onSubmit}
+          variant={disabled ? "secondary" : "primary"}
+          disabled={disabled}
+          className="submit-button"
+          onClick={handleSubmit}
         >
           {loading ? <Spinner size="sm" animation="border" /> : "Submit"}
         </Button>

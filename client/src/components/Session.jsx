@@ -1,6 +1,8 @@
 import React, { memo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 import "./Session.scss";
 
@@ -19,15 +21,45 @@ const Icon = memo(() => (
   </i>
 ));
 
-const Session = ({ className, session, onRegister = null }) => {
+const Session = ({
+  className,
+  session,
+  onJoinSession = null,
+  onStartSession = null,
+}) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [starting, setStarting] = useState(false);
 
-  const handleRegister = () => {
-    if (onRegister) {
-      setLoading(true);
-      onRegister()
+  const handleStart = (e, sessionId) => {
+    e?.stopPropagation();
+    if (onStartSession) {
+      setStarting(true);
+      onStartSession(sessionId)
         .then(() => {
-          toast.success("You have enrolled successfully!");
+          toast.success("You have started the session successfully!");
+          setStarting(false);
+        })
+        .catch((err) => {
+          toast.error(err?.message);
+          setStarting(false);
+        })
+        .finally(() => setStarting(false));
+    }
+  };
+
+  const handleJoin = (e, sessionId) => {
+    e?.stopPropagation();
+    if (onJoinSession) {
+      setLoading(true);
+      onJoinSession(session?.id)
+        .then(() => {
+          toast.success("You have joined the session successfully!");
+          navigate(`/sessions/${sessionId}`);
+          setLoading(false);
+        })
+        .catch((err) => {
+          toast.error(err?.message);
           setLoading(false);
         })
         .finally(() => setLoading(false));
@@ -45,7 +77,7 @@ const Session = ({ className, session, onRegister = null }) => {
                 <Icon />
                 <div className="tutor">
                   <div>
-                    <strong>{tutor?.tutor?.name}</strong>
+                    <strong>Tutor: {tutor?.tutor?.name}</strong>
                     {!!tutor?.tutor?.email && (
                       <span className="color-light text-small text-italic ">{` (${tutor?.tutor?.email})`}</span>
                     )}
@@ -60,15 +92,33 @@ const Session = ({ className, session, onRegister = null }) => {
             ))}
           </div>
           <div>
-            {onRegister && (
+            {typeof session?.num_students === "number" && (
+              <ProgressBar
+                className="mb-3"
+                variant="success"
+                now={session?.num_students / 25}
+              />
+            )}
+            {onStartSession && (
+              <Button
+                className={classNames("register-button", {
+                  loading: starting,
+                })}
+                variant="outline-primary"
+                onClick={(e) => handleStart(e, session?.id)}
+              >
+                {starting ? "Starting..." : "Start"}
+              </Button>
+            )}
+            {onJoinSession && (
               <Button
                 className={classNames("register-button", {
                   loading: loading,
                 })}
                 variant="outline-primary"
-                onClick={handleRegister}
+                onClick={(e) => handleJoin(e, session?.id)}
               >
-                {loading ? "Registering..." : "Register"}
+                {loading ? "Joining..." : "Join"}
               </Button>
             )}
           </div>
