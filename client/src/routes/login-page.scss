@@ -1,5 +1,7 @@
 .loginForm {
   height: 100vh;
+  position: relative;
+  bottom: 80px;
   .formWrap {
     width: 460px;
     border: 1px solid #d9d9d9;
@@ -11,4 +13,12 @@
 
 .loginImg {
   background-color: #d9d9d9;
+}
+
+.heroImg {
+  width: 750px;
+}
+
+.logoImg {
+  width: 250px;
 }

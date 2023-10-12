@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
+import heroImg from "../images/hero-img.png";
+import logoImg from "../images/logo-img.png"
 
 import "./login-page.scss";
 
@@ -46,10 +48,12 @@ export default function LoginPage() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col loginImg"></div>
+        <div className="col d-flex flex-column justify-content-center align-items-center">
+          <img className="heroImg" src={heroImg}/>
+        </div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
-          <div>
-            <h3 className="mb-4 text-center">Welcome Back to Bright Boost!</h3>
+        <img className="logoImg" src={logoImg}/>
+          <div>           
             <Form className="formWrap">
               <Form.Group className="mb-4" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
