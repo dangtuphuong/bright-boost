@@ -50,7 +50,6 @@ router.post("/answer/start", async function(req, res, next) {
                 id: id
             }
         });
-
         const now = new Date();
 
         if (!question) {
@@ -59,8 +58,8 @@ router.post("/answer/start", async function(req, res, next) {
             await Question.update(
                 { 
                     tutorId: tutorId,
-                    is_answer: 1,
-                    time_start: now
+                    is_answered: 1,
+                    time_start: now.getTime()
                 }
                 ,{
                     where: {
@@ -81,25 +80,25 @@ router.post("/answer/end", async function(req, res, next) {
         const question = Question.findOne({
             where: {
                 id: id,
-                is_answer: 1
+                is_answered: 1
             }
         });
 
-        const now = Date.now();
+        const now = new Date();
 
         if (!question) {
             next('Could not find the specific question');
         } else {
             await Question.update(
                 { 
-                    is_answer: 2,
-                    time_end: now,
+                    is_answered: 2,
+                    time_end: now.getTime(),
                     tutorId
                 }
                 ,{
                     where: {
                         id: id,
-                        is_answer: 1
+                        is_answered: 1
                     }
                 });
             
@@ -117,7 +116,6 @@ router.post("/add", async function(req, res, next) {
         await Question.create({
             studentId,
             sessionId,
-            tutorId: 1,
             content,
             is_answered: 0,
             time_publish: Date.now(),
