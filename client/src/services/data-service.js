@@ -29,7 +29,7 @@ const onEndSession = ({ sessionId }) => {
   );
 };
 
-const onJoinSession = ({ sessionId, userId, role }) => {
+const onJoinSession = ({ sessionId, userId, role = "student" }) => {
   return axios.post(
     API_URL + `session/join/${role}`,
     {
@@ -40,7 +40,7 @@ const onJoinSession = ({ sessionId, userId, role }) => {
   );
 };
 
-const onLeaveSession = ({ sessionId, userId, role }) => {
+const onLeaveSession = ({ sessionId, userId, role = "student" }) => {
   return axios.post(
     API_URL + `session/leave/${role}`,
     {
