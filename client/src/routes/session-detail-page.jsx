@@ -39,7 +39,7 @@ const SessionDetailPage = () => {
   const onGetStudents = () => {
     setStudentsLoading(true);
     DataService.getStudentList({ sessionId: Number(id) })
-      .then((data) => setStudents(data?.students || []))
+      .then((data) => setStudents(data?.data || []))
       .catch((err) => toast.error(err?.message))
       .finally(() => setStudentsLoading(false));
   };
