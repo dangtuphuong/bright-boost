@@ -1,8 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 
-import { students, questions } from "./fake-data";
-
 const API_URL = "http://localhost:3001/api/";
 
 const getTimetable = () => {
@@ -51,15 +49,27 @@ const onLeaveSession = ({ sessionId, userId, role = "student" }) => {
   );
 };
 
-const getSessionDetail = () => {
-  // return axios.get(API_URL + "session", { headers: authHeader() });
-  return new Promise((resolve, reject) =>
-    setTimeout(() => resolve({ students, questions }), 1000)
-  );
+const getStudentList = (params) => {
+  return axios.get(API_URL + "session/student", {
+    params,
+    headers: authHeader(),
+  });
 };
 
 const getQuestionList = (params) => {
   return axios.get(API_URL + "question", { params, headers: authHeader() });
+};
+
+const markAttendance = (params) => {
+  return axios.post(API_URL + "attendant/mark", params, {
+    headers: authHeader(),
+  });
+};
+
+const removeAttendance = (params) => {
+  return axios.post(API_URL + "attendant/remove", params, {
+    headers: authHeader(),
+  });
 };
 
 const postQuestion = (params) => {
@@ -87,11 +97,13 @@ const DataService = {
   onEndSession,
   onJoinSession,
   onLeaveSession,
-  getSessionDetail,
+  getStudentList,
   getQuestionList,
   onStartAnswer,
   onEndAnswer,
   postQuestion,
+  markAttendance,
+  removeAttendance,
 };
 
 export default DataService;

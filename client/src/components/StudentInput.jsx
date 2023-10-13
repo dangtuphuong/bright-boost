@@ -27,8 +27,11 @@ const StudentInput = ({ sessionId, onSubmitSuccess }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    // TODO
-    DataService.addStudent({ sessionId, studentId: Number(studentId) })
+    DataService.onJoinSession({
+      sessionId,
+      userId: Number(studentId),
+      role: "student",
+    })
       .then(() => {
         setLoading(false);
         setStudentId("");

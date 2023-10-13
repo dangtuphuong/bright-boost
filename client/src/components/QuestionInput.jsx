@@ -62,7 +62,7 @@ const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
         <Form.Label>Question</Form.Label>
         <Form.Control
           as="textarea"
-          rows={3}
+          rows={2}
           value={content}
           onChange={(e) => setContent(e?.target?.value)}
         />
