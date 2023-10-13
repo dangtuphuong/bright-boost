@@ -51,11 +51,11 @@ const onLeaveSession = ({ sessionId, userId, role = "student" }) => {
   );
 };
 
-const getSessionDetail = () => {
-  // return axios.get(API_URL + "session", { headers: authHeader() });
-  return new Promise((resolve, reject) =>
-    setTimeout(() => resolve({ students, questions }), 1000)
-  );
+const getStudentList = (params) => {
+  return axios.get(API_URL + "session/student", {
+    params,
+    headers: authHeader(),
+  });
 };
 
 const getQuestionList = (params) => {
@@ -87,7 +87,7 @@ const DataService = {
   onEndSession,
   onJoinSession,
   onLeaveSession,
-  getSessionDetail,
+  getStudentList,
   getQuestionList,
   onStartAnswer,
   onEndAnswer,
