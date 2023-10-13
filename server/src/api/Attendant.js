@@ -1,12 +1,11 @@
 import express from "express";
 import Attendant from "../model/Attendant";
-import Student from "../model/Student";
 
 const router = express.Router();
 const { Op } = require("sequelize");
 
 router.post('/mark', async function (req, res, next) {
-    const { students, sessionId } = req.body;
+    const { studentId, sessionId } = req.body;
 
     try {
         const startDay = new Date();
@@ -15,26 +14,24 @@ router.post('/mark', async function (req, res, next) {
         const endDay = new Date();
         endDay.setHours(23, 59, 59);
 
-        students.map(async function(student) {
-            if (student.mark) {
-                const attend = await Attendant.findOne({
-                    where: {
-                        sessionId: sessionId,
-                        studentId: student.id,
-                        time_attend: {
-                            [Op.between]: [startDay.getTime(), endDay.getTime()] 
-                        }
-                    }
-                });
-                if (!attend) {
-                    throw new Error("!Cant find attendant");
-                } else {
-                    attend.tutor_mark = 1;
-                    attend.save();
+        const attend = await Attendant.findOne({
+            where: {
+                sessionId: sessionId,
+                studentId: studentId,
+                time_attend: {
+                    [Op.between]: [startDay.getTime(), endDay.getTime()] 
                 }
-                res.status(200).json("Marking attendant done!");
             }
-        })
+        });
+
+        if (!attend) {
+            throw new Error("No such attendant found")
+        } else {
+            attend.is_mark = 1;
+            attend.save();
+            res.status(200).json({message: "Successfully mark attendant!"});
+        }
+
     } catch (err) {
         next(err);
     }
