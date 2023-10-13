@@ -39,7 +39,16 @@ const SessionDetailPage = () => {
   const onGetStudents = () => {
     setStudentsLoading(true);
     DataService.getStudentList({ sessionId: Number(id) })
-      .then((data) => setStudents(data?.data || []))
+      .then((data) =>
+        setStudents(
+          (isEmpty(data?.data) ? [] : data?.data)?.map((student) => ({
+            ...student,
+            tutor_mark: student?.attendants?.find(
+              ({ tutor_mark }) => tutor_mark > 0
+            ),
+          }))
+        )
+      )
       .catch((err) => toast.error(err?.message))
       .finally(() => setStudentsLoading(false));
   };
@@ -117,6 +126,22 @@ const SessionDetailPage = () => {
         onFinishAnswer();
       });
 
+  const handleMarkAttendance = (studentId) =>
+    DataService.markAttendance({
+      studentId,
+      sessionId: Number(id),
+    })
+      .then(() => setTimeout(() => onGetStudents(), 300))
+      .catch((e) => toast.error(e.message));
+
+  const handleRemoveAttendance = (studentId) =>
+    DataService.removeAttendance({
+      studentId,
+      sessionId: Number(id),
+    })
+      .then(onGetStudents)
+      .catch((e) => toast.error(e.message));
+
   return (
     <NavBar>
       <div className="container">
@@ -151,7 +176,7 @@ const SessionDetailPage = () => {
                     key={student?.id}
                     className="mb-3 w-100 student-card"
                     style={
-                      student?.isAttended ? {} : { backgroundColor: "#eee" }
+                      student?.tutor_mark ? {} : { backgroundColor: "#eee" }
                     }
                   >
                     <Card.Body>
@@ -163,18 +188,20 @@ const SessionDetailPage = () => {
                           <Button
                             className="attend-button"
                             variant="outline-danger"
+                            onClick={() => handleRemoveAttendance(student?.id)}
                           >
                             <i className="material-icons">close</i>
                           </Button>
-                          {!student?.isAttended && (
+                          {!student?.tutor_mark && (
                             <Button
                               className="attend-button"
                               variant="outline-success"
+                              onClick={() => handleMarkAttendance(student?.id)}
                             >
                               <i className="material-icons">check</i>
                             </Button>
                           )}
-                          {student?.isAttended && (
+                          {student?.tutor_mark && (
                             <span className="color-light isAttended">
                               Confirmed
                             </span>
