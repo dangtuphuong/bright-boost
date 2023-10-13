@@ -8,6 +8,7 @@ import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
+import StudentInput from "../components/StudentInput";
 import DataService from "../services/data-service";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
@@ -28,6 +29,7 @@ const SessionDetailPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
+  const isTutor = currentUser?.role === "tutor";
 
   useEffect(() => {
     onGetStudents();
@@ -123,7 +125,7 @@ const SessionDetailPage = () => {
             <Button variant="warning" onClick={onLeaveSession}>
               {leaving ? "Leaving" : "Leave Session"}
             </Button>
-            {currentUser?.role === "tutor" && (
+            {isTutor && (
               <Button className="ms-3" variant="danger" onClick={onEndSession}>
                 {ending ? "Ending" : "End Session"}
               </Button>
@@ -133,6 +135,12 @@ const SessionDetailPage = () => {
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
+            {isTutor && (
+              <StudentInput
+                sessionId={Number(id)}
+                onSubmitSuccess={onGetStudents}
+              />
+            )}
             <div className="d-flex flex-column justify-content-center align-items-center">
               {studentsLoading ? (
                 <Spinner animation="border" />
@@ -175,7 +183,10 @@ const SessionDetailPage = () => {
           <div className="col-8 gx-5 question-list">
             <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
-              <QuestionInput sessionId={Number(id)} onSubmit={onGetQuestions} />
+              <QuestionInput
+                sessionId={Number(id)}
+                onSubmitSuccess={onGetQuestions}
+              />
               <div className="w-100 mt-3">
                 {questionsLoading ? (
                   <Spinner animation="border" />
@@ -190,9 +201,7 @@ const SessionDetailPage = () => {
                           : {}
                       }
                       onDoubleClick={
-                        currentUser?.role === "tutor"
-                          ? () => handleStartAnswer(question)
-                          : null
+                        isTutor ? () => handleStartAnswer(question) : null
                       }
                     >
                       <Card.Body>
