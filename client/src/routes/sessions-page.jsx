@@ -40,7 +40,11 @@ const SessionsPage = () => {
             sessions?.map((session) => (
               <div key={session?.id} className="mb-3 w-75">
                 <h5 className="mb-3">{session?.date}</h5>
-                <Session session={session} onJoinSession={onJoinSession} />
+                <Session
+                  session={session}
+                  hasProgressBar
+                  onJoinSession={onJoinSession}
+                />
               </div>
             ))
           ) : (

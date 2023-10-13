@@ -9,12 +9,11 @@ import { toast } from "../components/Toast";
 
 import "./QuestionInput.scss";
 
-const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
+const StudentInput = ({ sessionId, onSubmitSuccess }) => {
   const [studentId, setStudentId] = useState("");
-  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const disabled = !content?.length || !studentId;
+  const disabled = !studentId;
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
   const isStudent = currentUser?.role === "student";
@@ -28,15 +27,11 @@ const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    DataService.postQuestion({
-      sessionId,
-      studentId: Number(studentId),
-      content,
-    })
+    // TODO
+    DataService.addStudent({ sessionId, studentId: Number(studentId) })
       .then(() => {
         setLoading(false);
         setStudentId("");
-        setContent("");
         onSubmitSuccess();
       })
       .catch((err) => {
@@ -46,7 +41,7 @@ const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
   };
 
   return (
-    <Form className="w-100 question-input-wrapper">
+    <Form className="mb-3 w-100 question-input-wrapper">
       {!isStudent && (
         <Form.Group className="mb-3">
           <Form.Label>Student ID</Form.Label>
@@ -58,15 +53,6 @@ const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
           />
         </Form.Group>
       )}
-      <Form.Group className="mb-3">
-        <Form.Label>Question</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={3}
-          value={content}
-          onChange={(e) => setContent(e?.target?.value)}
-        />
-      </Form.Group>
       <Form.Group className="d-flex justify-content-end">
         <Button
           variant={disabled ? "secondary" : "primary"}
@@ -81,4 +67,4 @@ const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
   );
 };
 
-export default QuestionInput;
+export default StudentInput;

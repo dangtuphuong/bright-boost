@@ -8,6 +8,7 @@ import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
+import StudentInput from "../components/StudentInput";
 import DataService from "../services/data-service";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
@@ -28,6 +29,7 @@ const SessionDetailPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
+  const isTutor = currentUser?.role === "tutor";
 
   useEffect(() => {
     onGetStudents();
@@ -123,7 +125,7 @@ const SessionDetailPage = () => {
             <Button variant="warning" onClick={onLeaveSession}>
               {leaving ? "Leaving" : "Leave Session"}
             </Button>
-            {currentUser?.role === "tutor" && (
+            {isTutor && (
               <Button className="ms-3" variant="danger" onClick={onEndSession}>
                 {ending ? "Ending" : "End Session"}
               </Button>
@@ -133,6 +135,12 @@ const SessionDetailPage = () => {
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
+            {isTutor && (
+              <StudentInput
+                sessionId={Number(id)}
+                onSubmitSuccess={onGetStudents}
+              />
+            )}
             <div className="d-flex flex-column justify-content-center align-items-center">
               {studentsLoading ? (
                 <Spinner animation="border" />
@@ -147,25 +155,31 @@ const SessionDetailPage = () => {
                   >
                     <Card.Body>
                       <div>{student?.name}</div>
-                      <div className="color-light">{student?.email}</div>
-                      <div className="attend-buttons">
-                        <Button
-                          className="attend-button"
-                          variant="outline-danger"
-                        >
-                          <i className="material-icons">close</i>
-                        </Button>
-                        <Button
-                          className={classNames("attend-button", {
-                            isAttended: student?.isAttended,
-                          })}
-                          variant={`${
-                            student?.isAttended ? "" : "outline-"
-                          }success`}
-                        >
-                          <i className="material-icons">check</i>
-                        </Button>
-                      </div>
+                      <div className="color-light">ID: {student?.id}</div>
+                      <div className="color-light">Email: {student?.email}</div>
+                      {isTutor && (
+                        <div className="attend-buttons">
+                          <Button
+                            className="attend-button"
+                            variant="outline-danger"
+                          >
+                            <i className="material-icons">close</i>
+                          </Button>
+                          {!student?.isAttended && (
+                            <Button
+                              className="attend-button"
+                              variant="outline-success"
+                            >
+                              <i className="material-icons">check</i>
+                            </Button>
+                          )}
+                          {student?.isAttended && (
+                            <span className="color-light isAttended">
+                              Confirmed
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </Card.Body>
                   </Card>
                 ))
@@ -175,7 +189,10 @@ const SessionDetailPage = () => {
           <div className="col-8 gx-5 question-list">
             <h4 className="mb-4 text-center">Question List</h4>
             <div className="d-flex flex-column justify-content-center align-items-center">
-              <QuestionInput sessionId={Number(id)} onSubmit={onGetQuestions} />
+              <QuestionInput
+                sessionId={Number(id)}
+                onSubmitSuccess={onGetQuestions}
+              />
               <div className="w-100 mt-3">
                 {questionsLoading ? (
                   <Spinner animation="border" />
@@ -184,13 +201,15 @@ const SessionDetailPage = () => {
                     <Card
                       key={question?.id}
                       className="mb-3 w-100"
-                      style={
-                        question?.is_answered
-                          ? { backgroundColor: "rgba(214, 234, 223, 0.4)" }
-                          : {}
-                      }
+                      style={{
+                        ...(question?.is_answered && {
+                          backgroundColor: "rgba(214, 234, 223, 0.4)",
+                        }),
+                        ...(isTutor &&
+                          !question?.is_answered && { cursor: "pointer" }),
+                      }}
                       onDoubleClick={
-                        currentUser?.role === "tutor"
+                        isTutor & !question?.is_answered
                           ? () => handleStartAnswer(question)
                           : null
                       }
