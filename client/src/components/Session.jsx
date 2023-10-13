@@ -92,11 +92,11 @@ const Session = ({
             ))}
           </div>
           <div>
-            {typeof session?.num_students === "number" && (
+            {session?.num_students > 0 && (
               <ProgressBar
                 className="mb-3"
                 variant="success"
-                now={session?.num_students / 25}
+                now={(session?.num_students / 25) * 100}
               />
             )}
             {onStartSession && (

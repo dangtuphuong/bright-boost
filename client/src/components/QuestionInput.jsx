@@ -9,7 +9,7 @@ import { toast } from "../components/Toast";
 
 import "./QuestionInput.scss";
 
-const QuestionInput = ({ sessionId, onSubmit }) => {
+const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
   const [studentId, setStudentId] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const QuestionInput = ({ sessionId, onSubmit }) => {
         setLoading(false);
         setStudentId("");
         setContent("");
-        onSubmit();
+        onSubmitSuccess();
       })
       .catch((err) => {
         setLoading(false);
