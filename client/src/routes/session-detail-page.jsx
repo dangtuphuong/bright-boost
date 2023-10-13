@@ -155,25 +155,31 @@ const SessionDetailPage = () => {
                   >
                     <Card.Body>
                       <div>{student?.name}</div>
-                      <div className="color-light">{student?.email}</div>
-                      <div className="attend-buttons">
-                        <Button
-                          className="attend-button"
-                          variant="outline-danger"
-                        >
-                          <i className="material-icons">close</i>
-                        </Button>
-                        <Button
-                          className={classNames("attend-button", {
-                            isAttended: student?.isAttended,
-                          })}
-                          variant={`${
-                            student?.isAttended ? "" : "outline-"
-                          }success`}
-                        >
-                          <i className="material-icons">check</i>
-                        </Button>
-                      </div>
+                      <div className="color-light">ID: {student?.id}</div>
+                      <div className="color-light">Email: {student?.email}</div>
+                      {isTutor && (
+                        <div className="attend-buttons">
+                          <Button
+                            className="attend-button"
+                            variant="outline-danger"
+                          >
+                            <i className="material-icons">close</i>
+                          </Button>
+                          {!student?.isAttended && (
+                            <Button
+                              className="attend-button"
+                              variant="outline-success"
+                            >
+                              <i className="material-icons">check</i>
+                            </Button>
+                          )}
+                          {student?.isAttended && (
+                            <span className="color-light isAttended">
+                              Confirmed
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </Card.Body>
                   </Card>
                 ))
@@ -195,13 +201,17 @@ const SessionDetailPage = () => {
                     <Card
                       key={question?.id}
                       className="mb-3 w-100"
-                      style={
-                        question?.is_answered
-                          ? { backgroundColor: "rgba(214, 234, 223, 0.4)" }
-                          : {}
-                      }
+                      style={{
+                        ...(question?.is_answered && {
+                          backgroundColor: "rgba(214, 234, 223, 0.4)",
+                        }),
+                        ...(isTutor &&
+                          !question?.is_answered && { cursor: "pointer" }),
+                      }}
                       onDoubleClick={
-                        isTutor ? () => handleStartAnswer(question) : null
+                        isTutor & !question?.is_answered
+                          ? () => handleStartAnswer(question)
+                          : null
                       }
                     >
                       <Card.Body>
