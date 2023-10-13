@@ -2,8 +2,24 @@ import express from "express";
 import Session from "../model/Session";
 import Tutor from "../model/Tutor";
 import Student from "../model/Student";
+import Attendant from "../model/Attendant";
 
 const router = express.Router();
+
+router.get("/student", async function (req, res, next) {
+    const { sessionId } = req.query;
+
+    try {
+        const student = await Student.findAll({
+            where: {
+                sessionId: sessionId
+            }
+        });
+        res.status(200).json(student);
+    } catch (err) {
+        next(err);
+    }
+});
 
 router.post('/start', async function (req, res, next) {
     const { sessionId } = req.body;
@@ -43,6 +59,15 @@ router.post('/end', async function (req, res, next) {
         } else {
             session.status = 0;
             session.save();
+            const students = await Student.findAll({
+                where: {
+                    sessionId: sessionId
+                }
+            });
+            students.map(function(student) {
+                student.sessionId = 0;
+                student.save();
+            })
             res.status(200).json('Done!');
         }
 
@@ -118,7 +143,7 @@ router.post('/leave/tutor', async function (req, res, next) {
 
 router.post('/join/student', async function (req, res, next) {
     const { sessionId, studentId } = req.body;
-
+    
     try {
         const session = await Session.findOne({
             where: {
@@ -144,6 +169,19 @@ router.post('/join/student', async function (req, res, next) {
             session.num_students += 1;
             student.save();
             session.save();
+            
+            const startDay = new Date();
+            startDay.setHours(0, 0, 0);
+            
+            const endDay = new Date();
+            endDay.setHours(23, 59, 59);
+
+            await Attendant.create({
+                studentId,
+                sessionId,
+                time_attend: Date.now()
+            })
+
             res.status(200).json('Done!');
         }
 
@@ -178,6 +216,7 @@ router.post('/leave/student', async function (req, res, next) {
             student.save();
             session.num_students -= 1;
             session.save();
+
             res.status(200).json('Done!');
         }
 
