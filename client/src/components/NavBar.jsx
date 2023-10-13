@@ -9,7 +9,7 @@ import navLogo from "../images/navLogo.png"
 
 import AuthService from "../services/auth-service";
 
-import "../components/NavBar.scss";
+import "./NavBar.scss";
 
 const NavBar = ({ children }) => {
   const navigate = useNavigate();
