@@ -6,7 +6,7 @@ import Session from "../model/Session";
 const router = express.Router();
 const { Op } = require("sequelize");
 
-router.post('/remove', async (req, res, next) => {
+router.post('/remove', async function (req, res, next) {
     const { studentId, sessionId } = req.body;
 
     try {
