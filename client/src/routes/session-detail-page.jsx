@@ -109,6 +109,7 @@ const SessionDetailPage = () => {
     })
       .then(() => {
         toast.success("Question is answered!");
+        onGetQuestions();
         onFinishAnswer();
       })
       .catch((err) => {
