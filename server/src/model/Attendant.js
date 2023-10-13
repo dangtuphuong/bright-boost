@@ -27,12 +27,13 @@ const Attendant = sequelize.define('attendant', {
         }
     },
     time_attend: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     tutor_mark: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        defaultValue: 0,
+        allowNull: false
     }
 }, { 
     tableName: "attendant", timestamps: false
