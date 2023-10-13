@@ -24,6 +24,7 @@ const Icon = memo(() => (
 const Session = ({
   className,
   session,
+  hasProgressBar,
   onJoinSession = null,
   onStartSession = null,
 }) => {
@@ -92,11 +93,11 @@ const Session = ({
             ))}
           </div>
           <div>
-            {session?.num_students > 0 && (
+            {hasProgressBar && (
               <ProgressBar
                 className="mb-3"
                 variant="success"
-                now={(session?.num_students / 25) * 100}
+                now={(session?.num_students / 25) * 100 || 0}
               />
             )}
             {onStartSession && (
