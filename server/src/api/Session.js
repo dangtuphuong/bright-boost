@@ -5,12 +5,30 @@ import Student from "../model/Student";
 import Attendant from "../model/Attendant";
 
 const router = express.Router();
+const { Op } = require('sequelize');
 
 router.get("/student", async function (req, res, next) {
     const { sessionId } = req.query;
 
+    const startDay = new Date()
+    startDay.setHours(0, 0, 0);  
+    const endDay = new Date()
+    endDay.setHours(23, 59, 59);
+
     try {
         const student = await Student.findAll({
+            include: [
+                {
+                    model: Attendant,
+                    attributes: ["id", "tutor_mark"],
+                    where: {
+                        sessionId,
+                        time_attend: {
+                            [Op.between]: [startDay.getTime(), endDay.getTime()] 
+                        }
+                    },
+                },
+            ],
             where: {
                 sessionId: sessionId
             }
