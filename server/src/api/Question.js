@@ -58,7 +58,7 @@ router.post("/answer/start", async function(req, res, next) {
         const now = new Date();
 
         if (!question) {
-            next('Could not find the specific question');
+            throw new Error('Could not find the specific question');
         } else {
             await Question.update(
                 { 
@@ -92,7 +92,7 @@ router.post("/answer/end", async function(req, res, next) {
         const now = new Date();
 
         if (!question) {
-            next('Could not find the specific question');
+            throw new Error('Could not find the specific question');
         } else {
             await Question.update(
                 { 
@@ -118,18 +118,36 @@ router.post("/add", async function(req, res, next) {
     const { sessionId, studentId, subjectId, content } = req.body;
     try {
 
-        await Question.create({
-            studentId,
-            sessionId,
-            subjectId,
-            content,
-            is_answered: 0,
-            time_publish: Date.now(),
-            content: content
-        });
+        const startDay = new Date();
+        startDay.setHours(0, 0, 0);
+        
+        const endDay = new Date();
+        endDay.setHours(23, 59, 59);
 
-        res.status(200).json({message: 'Successful add new question'});
-
+        const count = await Question.count({
+            where: {
+                sessionId: sessionId,
+                studentId: studentId,
+                time_publish: {
+                    [Op.between]: [startDay.getTime(), endDay.getTime()]
+                }
+            }
+        })
+        
+        if (count >= 5) {
+            throw new Error('You have reached maximum questions ask in this class');
+        } else {
+            await Question.create({
+                studentId,
+                sessionId,
+                subjectId,
+                content,
+                is_answered: 0,
+                time_publish: Date.now(),
+                content: content
+            });
+            res.status(200).json({message: 'Successful add new question'});
+        }
     } catch (err) {
         next(err);
     }
