@@ -2,6 +2,7 @@ import express from "express";
 import Question from "../model/Question";
 import Student from "../model/Student";
 import Tutor from "../model/Tutor";
+import Subject from "../model/Subject";
 
 const router = express.Router();
 const { Op } = require("sequelize");
@@ -24,6 +25,10 @@ router.get("/", async function(req, res, next) {
                 },
                 {
                     model: Tutor,
+                    attributes: ["id", "name"]
+                },
+                {
+                    model: Subject,
                     attributes: ["id", "name"]
                 }
             ],
@@ -110,12 +115,13 @@ router.post("/answer/end", async function(req, res, next) {
 })
 
 router.post("/add", async function(req, res, next) {
-    const { sessionId, studentId, content } = req.body;
+    const { sessionId, studentId, subjectId, content } = req.body;
     try {
 
         await Question.create({
             studentId,
             sessionId,
+            subjectId,
             content,
             is_answered: 0,
             time_publish: Date.now(),
