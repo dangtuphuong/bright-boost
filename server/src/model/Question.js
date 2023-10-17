@@ -3,6 +3,7 @@ import sequelize from "../../bin/www";
 import Session from "./Session";
 import Tutor from "./Tutor";
 import Student from "./Student";
+import Subject from "./Subject";
 
 const Question = sequelize.define('question', {
     id: {
@@ -32,6 +33,14 @@ const Question = sequelize.define('question', {
         allowNull: false,
         references: {
             model: Session,
+            key: 'id'
+        }
+    },
+    subjectId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Subject,
             key: 'id'
         }
     },
@@ -67,5 +76,8 @@ Question.belongsTo(Session);
 
 Student.hasMany(Question);
 Question.belongsTo(Student);
+
+Subject.hasMany(Question);
+Question.belongsTo(Subject)
 
 export default Question;
