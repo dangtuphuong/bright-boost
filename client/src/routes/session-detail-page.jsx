@@ -243,6 +243,10 @@ const SessionDetailPage = () => {
                       }
                     >
                       <Card.Body>
+                        <div className="d-flex w-100">
+                          <i className="material-icons">navigate_next</i>
+                          <strong>{question?.subject?.name}</strong>
+                        </div>
                         <div>{question?.content}</div>
                         <div className="d-flex justify-content-between">
                           <div className="color-light">{`From ${question?.student?.name}`}</div>
