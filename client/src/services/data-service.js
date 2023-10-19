@@ -90,6 +90,12 @@ const onEndAnswer = (params) => {
   });
 };
 
+const getAttendant = (params) => {
+  return axios.post(API_URL + "attendant/", params, {
+    headers: authHeader(),
+  });
+}
+
 const DataService = {
   getTimetable,
   getAvailableSessions,
@@ -104,6 +110,7 @@ const DataService = {
   postQuestion,
   markAttendance,
   removeAttendance,
+  getAttendant,
 };
 
 export default DataService;
