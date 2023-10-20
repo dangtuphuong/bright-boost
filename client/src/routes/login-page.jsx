@@ -48,12 +48,12 @@ export default function LoginPage() {
     <div className="container">
       <div className="row">
         <div className="col d-flex flex-column justify-content-center align-items-center">
+        <a href="https://storyset.com/illustration/college-class/rafiki">
           <img className="heroImg" src={heroImg}/>
+        </a>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
-          <a href="https://storyset.com/illustration/college-class/rafiki">
           <img className="logoImg" src={logoImg}/>
-          </a>
           <div>           
             <Form className="formWrap">
               <Form.Group className="mb-4" controlId="formBasicEmail">
