@@ -51,7 +51,9 @@ export default function LoginPage() {
           <img className="heroImg" src={heroImg}/>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
-        <img className="logoImg" src={logoImg}/>
+          <a href="https://storyset.com/illustration/college-class/rafiki">
+          <img className="logoImg" src={logoImg}/>
+          </a>
           <div>           
             <Form className="formWrap">
               <Form.Group className="mb-4" controlId="formBasicEmail">
