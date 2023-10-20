@@ -4,7 +4,6 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import classNames from "classnames";
 
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
@@ -12,13 +11,14 @@ import StudentInput from "../components/StudentInput";
 import DataService from "../services/data-service";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
-import { isEmpty } from "../services/utils";
+import { isEmpty, pluralize } from "../services/utils";
 
 import "./session-detail-page.scss";
 
 const SessionDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [subjects, setSubjects] = useState();
   const [students, setStudents] = useState([]);
   const [studentsLoading, setStudentsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -34,6 +34,15 @@ const SessionDetailPage = () => {
   useEffect(() => {
     onGetStudents();
     onGetQuestions();
+    DataService.getAvailableSessions().then((data) =>
+      setSubjects(
+        data?.data
+          ?.find((s) => s.id == id)
+          ?.TutorDetails?.map(({ tutor }) => tutor?.SubjectDetails)
+          ?.map((s) => s?.map(({ subject }) => subject))
+          ?.flat()
+      )
+    );
   }, []);
 
   const onGetStudents = () => {
@@ -146,7 +155,7 @@ const SessionDetailPage = () => {
     <NavBar>
       <div className="container">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="mb-4 mt-4">Session ID: {id}</h2>
+          <h2 className="mb-3 mt-4">Session ID: {id}</h2>
           <div>
             <Button variant="warning" onClick={onLeaveSession}>
               {leaving ? "Leaving" : "Leave Session"}
@@ -158,6 +167,12 @@ const SessionDetailPage = () => {
             )}
           </div>
         </div>
+        <h4 className="mb-4">
+          Subjects:{" "}
+          <span className="color-light">
+            {pluralize(subjects?.map((s) => s?.name))}
+          </span>
+        </h4>
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
@@ -219,6 +234,7 @@ const SessionDetailPage = () => {
             <div className="d-flex flex-column justify-content-center align-items-center">
               <QuestionInput
                 sessionId={Number(id)}
+                subjects={subjects}
                 onSubmitSuccess={onGetQuestions}
               />
               <div className="w-100 mt-3">

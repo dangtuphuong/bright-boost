@@ -11,17 +11,7 @@ import { toast } from "../components/Toast";
 
 import "./QuestionInput.scss";
 
-const subjects = [
-  { id: 1, name: "Maths" },
-  { id: 2, name: "Physics" },
-  { id: 3, name: "Literature" },
-  { id: 4, name: "Chemistry" },
-  { id: 5, name: "Geography" },
-  { id: 6, name: "Arts" },
-  { id: 7, name: "Biology" },
-];
-
-const QuestionInput = ({ sessionId, onSubmitSuccess }) => {
+const QuestionInput = ({ sessionId, subjects, onSubmitSuccess }) => {
   const [studentId, setStudentId] = useState("");
   const [subjectId, setSubjectId] = useState("");
   const [content, setContent] = useState("");
