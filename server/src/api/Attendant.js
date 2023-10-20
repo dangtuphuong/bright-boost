@@ -74,7 +74,7 @@ router.post('/mark', async function (req, res, next) {
         if (!attend) {
             throw new Error("No such attendant found")
         } else {
-            attend.is_mark = 1;
+            attend.tutor_mark = 1;
             attend.save();
             res.status(200).json({message: "Successfully mark attendant!"});
         }

@@ -32,7 +32,7 @@ const SessionsPage = () => {
   return (
     <NavBar>
       <div className="container">
-        <h2 className="mb-4 mt-4">Your Sessions</h2>
+        <h2 className="mb-4 mt-4">Active Sessions</h2>
         <div className="d-flex flex-column justify-content-center align-items-center">
           {loading ? (
             <Spinner animation="border" />
