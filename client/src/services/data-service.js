@@ -60,6 +60,10 @@ const getQuestionList = (params) => {
   return axios.get(API_URL + "question", { params, headers: authHeader() });
 };
 
+const getAllQuestion = (params) => {
+  return axios.get(API_URL + "question/all", { params, headers: authHeader() });
+}
+
 const markAttendance = (params) => {
   return axios.post(API_URL + "attendant/mark", params, {
     headers: authHeader(),
@@ -111,6 +115,7 @@ const DataService = {
   markAttendance,
   removeAttendance,
   getAttendant,
+  getAllQuestion
 };
 
 export default DataService;

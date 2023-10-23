@@ -1,11 +1,13 @@
 import { useEffect, useReducer, useState } from "react";
+import DatePicker from "react-datepicker";
 import DataService from "../services/data-service";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 const AdminStudentPage = () => {
-    const [isInit, setInit] = useState(false);
     const [attendant, setAttendant] = useState([]);
+    const [date, setDate] = useState(null);
     const filterReducer = (state, action) => {
-        console.log(action);
         switch (action.type) {
             case 'SET ATTENDANT': {
                 return {
@@ -18,27 +20,54 @@ const AdminStudentPage = () => {
                     ...state,
                     isFiltered: action.state
                 }
-                break;
-            case 'SESSION FILTER':
+            case 'SET SESSION FILTER':
                 return {
                     ...state,
-                    isSessionFiltered: action.state
+                    sessionFilter: action.session
+                }
+            case 'SET STUDENT FILTER':
+                return {
+                    ...state,
+                    studentFilter: action.student
+                }
+            case 'SET DATE FILTER':
+                return {
+                    ...state,
+                    dateFilter: action.date,
+                    isDateFilter: true
+                }
+            case 'SET MARK FILTER':
+                return {
+                    ...state,
+                    markFilter: action.mark
+                }
+            case 'RESET DATE FILTER':
+                return {
+                    ...state,
+                    isDateFilter: false
                 }
         }
     }    
 
-    const [filter, filterDispatch] = useReducer(filterReducer, {attendant: [], isFiltered: false, isSessionFiltered: false});
+    const [filter, filterDispatch] = useReducer(filterReducer, {attendant: [], isFiltered: false, sessionFilter: '', studentFilter: '', dateFilter: 0, isDateFilter: false, markFilter: ''});
 
     useEffect(() => {
         DataService.getAttendant()
         .then(response => {
-            if (!isInit) { 
-                filterDispatch({type: 'SET ATTENDANT', attendant: response.data});
-                setInit(true);
-            } 
             setAttendant(response.data);
+            filterData();
         });
     });
+
+    const filterData = () => {
+        const data = attendant.filter(_attendant => {
+            if (_attendant.sessionId.toString().includes(filter.sessionFilter.trim())
+                && _attendant.studentId.toString().includes(filter.studentFilter.trim())
+                && (!filter.isDateFilter || (_attendant.time_attend / 1000 >= filter.dateFilter - 43200 && _attendant.time_attend / 1000 <= filter.dateFilter + 43200 ))
+                && _attendant.tutor_mark.toString().includes(filter.markFilter.trim())) return _attendant;
+        });
+        filterDispatch({type: 'SET ATTENDANT', attendant: data})
+    }
 
     const convertUnixTime = unixTime => {
         const date = new Date(unixTime);
@@ -53,8 +82,22 @@ const AdminStudentPage = () => {
     }
 
     const handleSessionFilterInputChange = (event) => {
-        const data = attendant.filter(_attendant => _attendant.sessionId == event.target.value);
-        filterDispatch({type: 'SET ATTENDANT', attendant: data})
+        filterDispatch({type: 'SET SESSION FILTER', session: event.target.value});
+    }
+
+    const handleStudentFilterInputChange = (event) => {
+        filterDispatch({type: 'SET STUDENT FILTER', student: event.target.value});
+    }
+
+    const handleDateFilterInputChange = (date) => {
+        setDate(date);
+        const _date = new Date(moment(date).format('YYYY-MM-DD'));
+        const unixTime = _date.getTime() / 1000;
+        filterDispatch({type: 'SET DATE FILTER', date: unixTime});
+    }
+
+    const handleMarkFilterInputChange = (event) => {
+        filterDispatch({type: 'SET MARK FILTER', mark: event.target.value});
     }
 
     return (
@@ -64,30 +107,65 @@ const AdminStudentPage = () => {
                 <div className="d-flex justify-content-end">
                     <button type="button" onClick={() => filterDispatch({type: 'FILTER', state: !filter.isFiltered})} className={`btn border ${!filter.isFiltered ? 'bg-light text-primary' : 'bg-primary text-light'}`}>Filter</button>
                 </div>
-                <div className={`${filter.isFiltered ? 'd-none' : ''}`}>
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            <button 
-                                className={`btn border ${!filter.isSessionFiltered ? 'bg-light text-primary' : 'bg-primary text-light'}`} 
-                                onClick={() => filterDispatch({type: 'SESSION FILTER', state: !filter.isSessionFiltered})}
-                            >Session ID</button>
-                            { filter.isSessionFiltered &&
-                                <div className="w-20 border rounded px-2 py-2">
-                                    <div className="input-group mb-3">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="basic-addon1">Session ID</span>
-                                        </div>
-                                        <input 
-                                            type="text" 
-                                            className="form-control" 
-                                            placeholder="Session ID" 
-                                            aria-label="Username" 
-                                            aria-describedby="basic-addon1"
-                                            onChange={handleSessionFilterInputChange}
-                                        />
-                                    </div>
-                                </div>
-                            }
+                <div className={`${!filter.isFiltered ? 'd-none' : ''} py-1`}>
+                    <div className="d-flex border rounded px-2 py-3">
+                        <div className={`w-25`}>
+                            <div
+                                className={`btn border bg-primary text-light`}
+                            >Session ID</div>
+                            <div className="w-50 border rounded px-2 py-2 m-0">
+                                <input
+                                    type="text"
+                                    className="form-control m-0"
+                                    placeholder="Session ID"
+                                    aria-label="Session"
+                                    aria-describedby="basic-addon1"
+                                    onChange={handleSessionFilterInputChange}
+                                />
+                            </div>
+                        </div>
+                        <div className={`w-25`}>
+                            <div
+                                className={`btn border bg-primary text-light`}
+                            >Student ID</div>
+                            <div className="w-50 border rounded px-2 py-2 m-0">
+                                <input
+                                    type="text"
+                                    className="form-control m-0"
+                                    placeholder="Student ID"
+                                    aria-label="Student"
+                                    aria-describedby="basic-addon1"
+                                    onChange={handleStudentFilterInputChange}
+                                />
+                            </div>
+                        </div>
+                        <div className={`w-25`}>
+                            <div
+                                className={`btn border bg-primary text-light`}
+                            >Date</div>
+                            <div className="w-75 d-flex align-items-center justify-content-between border rounded px-2 py-2 m-0">
+                                <DatePicker
+                                    selected={date}
+                                    onChange={date => handleDateFilterInputChange(date)}
+                                    className={`w-75`}
+                                />
+                                <button className={`btn rounded p-0`} onClick={() => { filterDispatch({type: 'RESET DATE FILTER'});setDate(null); }}>Reset</button>
+                            </div>
+                        </div>
+                        <div className={`w-25`}>
+                            <div
+                                className={`btn border bg-primary text-light`}
+                            >Marked</div>
+                            <div className="w-50 border rounded px-2 py-2 m-0">
+                                <select
+                                    onChange={handleMarkFilterInputChange}
+                                    className={`w-75`}
+                                >
+                                    <option value={""}>All --</option>
+                                    <option value={"1"}>YES</option>
+                                    <option value={"0"}>NO</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
