@@ -7,6 +7,31 @@ import Subject from "../model/Subject";
 const router = express.Router();
 const { Op } = require("sequelize");
 
+router.get("/all", async function (req, res, next) {
+    try {
+        const questions = await Question.findAll({
+            include: [
+                {
+                    model: Student,
+                    attributes: ["id", "name"]
+                },
+                {
+                    model: Tutor,
+                    attributes: ["id", "name"]
+                },
+                {
+                    model: Subject,
+                    attributes: ["id", "name"]
+                }
+            ]
+        });
+
+        res.status(200).json(questions);
+    } catch (err) {
+        next(err);
+    }
+})
+
 router.get("/", async function(req, res, next) {
     const { sessionId } = req.query;
     try {
@@ -143,8 +168,7 @@ router.post("/add", async function(req, res, next) {
                 subjectId,
                 content,
                 is_answered: 0,
-                time_publish: Date.now(),
-                content: content
+                time_publish: Date.now()
             });
             res.status(200).json({message: 'Successful add new question'});
         }

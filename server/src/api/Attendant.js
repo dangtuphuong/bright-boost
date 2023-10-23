@@ -6,6 +6,24 @@ import Session from "../model/Session";
 const router = express.Router();
 const { Op } = require("sequelize");
 
+router.post('/', async function (req, res, next) {
+    try {
+        const session = await Attendant.findAll({
+            include: [
+                {
+                    model: Student,
+                },
+                {
+                    model: Session,
+                }]
+        });
+
+        res.status(200).json(session);
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.post('/remove', async function (req, res, next) {
     const { studentId, sessionId } = req.body;
 
@@ -55,19 +73,11 @@ router.post('/mark', async function (req, res, next) {
     const { studentId, sessionId } = req.body;
 
     try {
-        const startDay = new Date();
-        startDay.setHours(0, 0, 0);
-        
-        const endDay = new Date();
-        endDay.setHours(23, 59, 59);
 
         const attend = await Attendant.findOne({
             where: {
                 sessionId: sessionId,
                 studentId: studentId,
-                time_attend: {
-                    [Op.between]: [startDay.getTime(), endDay.getTime()] 
-                }
             }
         });
 
