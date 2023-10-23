@@ -34,15 +34,20 @@ const SessionDetailPage = () => {
   useEffect(() => {
     onGetStudents();
     onGetQuestions();
-    DataService.getAvailableSessions().then((data) =>
-      setSubjects(
-        data?.data
-          ?.find((s) => s.id == id)
-          ?.TutorDetails?.map(({ tutor }) => tutor?.SubjectDetails)
-          ?.map((s) => s?.map(({ subject }) => subject))
-          ?.flat()
-      )
-    );
+    DataService.getAvailableSessions().then((data) => {
+      const filter = data?.data
+        ?.find((s) => s.id == id)
+        ?.TutorDetails?.map(({ tutor }) => tutor?.SubjectDetails)
+        ?.map((s) => s?.map(({ subject }) => subject))
+        ?.flat();
+      let result = [];
+      for (let i in filter) {
+        if (result?.findIndex((item) => item?.id === filter[i]?.id) < 0) {
+          result = [...result, filter[i]];
+        }
+      }
+      setSubjects(result);
+    });
   }, []);
 
   const onGetStudents = () => {
