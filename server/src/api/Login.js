@@ -5,27 +5,16 @@ import Admin from "./Admin";
 
 const router = express.Router();
 
-async function checkAdmin(email, password) {
-  const admin = await Admin.findOne({
-    where: {
-      email,
-      password
-    }
-  })
-  if (admin !== null) return true
-  else return false;
-}
-
 router.post("/admin_login", async function (req, res, next) {
   const { email, password } = req.body;
   try {
     const admin = await Admin.findOne({
-    attributes: ["id", "email"],
-    where: {
-      email,
-      password
-    }
-    })
+      attributes: ["id", "email"],
+      where: {
+        email,
+        password
+      }
+    });
     if (admin === null) {
       throw new Error('No match admin');
     } else {
@@ -46,7 +35,7 @@ router.post("/student_login", async function (req, res, next) {
         email,
         password
       }
-    })
+    });
     if (student === null) {
       throw new Error('No match student');
     } else {
@@ -62,12 +51,12 @@ router.post("/tutor_login", async function (req, res, next) {
   const { email, password } = req.body;
   try {
       const tutor = await Tutor.findOne({
-      attributes: ["id", "email", "name", "birthday", "gender", "address"],
-      where: {
-          email,
-          password
-      }
-      })
+        attributes: ["id", "email", "name", "birthday", "gender", "address"],
+        where: {
+            email,
+            password
+        }
+      });
       if (tutor === null) {
         throw new Error('No match tutor');
       } else {
