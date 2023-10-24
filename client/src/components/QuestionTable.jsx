@@ -178,6 +178,9 @@ const AdminQuestionPage = () => {
                   />
                 </div>
               </th>
+              <th scope="col">
+                <div className="header-cell">Duration</div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -188,7 +191,7 @@ const AdminQuestionPage = () => {
                   <td className="text-center">{_question.subject.name}</td>
                   <td>{_question.content}</td>
                   <td className="text-center">
-                    {moment(_question.time_publish).format("dddd, DD-MM-YYYY")}
+                    {moment(_question.time_publish).format("ddd, DD-MM-YYYY")}
                   </td>
                   <td className="text-center">
                     {_question.is_answered === 1 ? "Yes" : "No"}
@@ -196,11 +199,19 @@ const AdminQuestionPage = () => {
                   <td className="text-center">
                     {_question.tutor !== null ? _question.tutor.name : ""}
                   </td>
+                  <td className="text-center">
+                    {_question.time_start && _question.time_end
+                      ? `${moment(_question.time_end).diff(
+                          moment(_question.time_start),
+                          "seconds"
+                        )}s`
+                      : ""}
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="text-center" colSpan="6">
+                <td className="text-center" colSpan="7">
                   No result found.
                 </td>
               </tr>
