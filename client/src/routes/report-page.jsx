@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import AdminStudentPage from "./admin-student-page";
-import AdminQuestionPage from "./admin-question-page";
+import StudentTable from "../components/StudentTable";
+import QuestionTable from "../components/QuestionTable";
 import NavBar from "../components/NavBar";
 
 const ReportPage = () => {
@@ -20,10 +20,10 @@ const ReportPage = () => {
             justify
           >
             <Tab eventKey="students" title="Students">
-              <AdminStudentPage />
+              <StudentTable />
             </Tab>
             <Tab eventKey="questions" title="Questions">
-              <AdminQuestionPage />
+              <QuestionTable />
             </Tab>
           </Tabs>
         </div>
