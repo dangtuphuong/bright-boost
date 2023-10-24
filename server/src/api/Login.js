@@ -16,54 +16,67 @@ async function checkAdmin(email, password) {
   else return false;
 }
 
-router.post("/student_login", async function (req, res, next) {
-    const { email, password } = req.body;
-    try {
-      if (checkAdmin(email, password)) {
-        res.status(200).json({email: 'admin', password: 'admin', isAdmin: true});
-      } else {
-        const student = await Student.findOne({
-          attributes: ["id", "email", "name", "birthday", "gender", "address"],
-          where: {
-            email,
-            password
-          }
-        })
-        if (student === null) {
-          throw new Error('No match student');
-        } else {
-          student.dataValues.accessToken = 'Student_' + student.id; 
-          res.status(200).json(student);
-        }
-      }
-    } catch (err) {
-      next(err)
+router.post("/admin_login", async function (req, res, next) {
+  const { email, password } = req.body;
+  try {
+    const admin = await Admin.findOne({
+    attributes: ["id", "email"],
+    where: {
+      email,
+      password
     }
+    })
+    if (admin === null) {
+      throw new Error('No match admin');
+    } else {
+      admin.dataValues.accessToken = 'Admin_' + admin.id;
+      res.status(200).json(admin);
+    }
+  } catch (err) {
+    next(err)
+  }
+});
+
+router.post("/student_login", async function (req, res, next) {
+  const { email, password } = req.body;
+  try {
+    const student = await Student.findOne({
+      attributes: ["id", "email", "name", "birthday", "gender", "address"],
+      where: {
+        email,
+        password
+      }
+    })
+    if (student === null) {
+      throw new Error('No match student');
+    } else {
+      student.dataValues.accessToken = 'Student_' + student.id; 
+      res.status(200).json(student);
+    }
+  } catch (err) {
+    next(err)
+  }
 });
 
 router.post("/tutor_login", async function (req, res, next) {
-    const { email, password } = req.body;
-    try {
-      if (checkAdmin(email, password)) {
-        res.status(200).json({email: 'admin', password: 'admin', isAdmin: true});
-      } else {
-        const tutor = await Tutor.findOne({
-        attributes: ["id", "email", "name", "birthday", "gender", "address"],
-        where: {
-            email,
-            password
-        }
-        })
-        if (tutor === null) {
-          throw new Error('No match tuor');
-        } else {
-          tutor.dataValues.accessToken = 'Tutor_' + tutor.id;
-          res.status(200).json(tutor);
-        }
+  const { email, password } = req.body;
+  try {
+      const tutor = await Tutor.findOne({
+      attributes: ["id", "email", "name", "birthday", "gender", "address"],
+      where: {
+          email,
+          password
       }
-    } catch (err) {
-        next(err)
-    }
+      })
+      if (tutor === null) {
+        throw new Error('No match tutor');
+      } else {
+        tutor.dataValues.accessToken = 'Tutor_' + tutor.id;
+        res.status(200).json(tutor);
+      }
+  } catch (err) {
+      next(err)
+  }
 });
   
 
