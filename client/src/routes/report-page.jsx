@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import StudentTable from "../components/StudentTable";
 import QuestionTable from "../components/QuestionTable";
+import Charts from "../components/Charts";
 import NavBar from "../components/NavBar";
 
 const ReportPage = () => {
@@ -24,6 +25,9 @@ const ReportPage = () => {
             </Tab>
             <Tab eventKey="questions" title="Questions">
               <QuestionTable />
+            </Tab>
+            <Tab eventKey="charts" title="Charts">
+              <Charts />
             </Tab>
           </Tabs>
         </div>
