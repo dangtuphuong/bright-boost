@@ -12,14 +12,17 @@ async function checkAdmin(email, password) {
       password
     }
   })
-  if (admin !== null) return true
+  if (admin !== null) {
+
+    return true;
+  }
   else return false;
 }
 
 router.post("/student_login", async function (req, res, next) {
     const { email, password } = req.body;
     try {
-      if (checkAdmin(email, password)) {
+      if (await checkAdmin(email, password)) {
         res.status(200).json({email: 'admin', password: 'admin', isAdmin: true});
       } else {
         const student = await Student.findOne({
@@ -44,7 +47,7 @@ router.post("/student_login", async function (req, res, next) {
 router.post("/tutor_login", async function (req, res, next) {
     const { email, password } = req.body;
     try {
-      if (checkAdmin(email, password)) {
+      if (await checkAdmin(email, password)) {
         res.status(200).json({email: 'admin', password: 'admin', isAdmin: true});
       } else {
         const tutor = await Tutor.findOne({
@@ -55,7 +58,7 @@ router.post("/tutor_login", async function (req, res, next) {
         }
         })
         if (tutor === null) {
-          throw new Error('No match tuor');
+          throw new Error('No match tutor');
         } else {
           tutor.dataValues.accessToken = 'Tutor_' + tutor.id;
           res.status(200).json(tutor);
