@@ -30,6 +30,7 @@ const SessionDetailPage = () => {
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
   const isTutor = currentUser?.role === "tutor";
+  const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
     onGetStudents();
@@ -162,10 +163,12 @@ const SessionDetailPage = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-3 mt-4">Session ID: {id}</h2>
           <div>
-            <Button variant="warning" onClick={onLeaveSession}>
-              {leaving ? "Leaving" : "Leave Session"}
-            </Button>
-            {isTutor && (
+            {!isAdmin && (
+              <Button variant="warning" onClick={onLeaveSession}>
+                {leaving ? "Leaving" : "Leave Session"}
+              </Button>
+            )}
+            {(isTutor || isAdmin) && (
               <Button className="ms-3" variant="danger" onClick={onEndSession}>
                 {ending ? "Ending" : "End Session"}
               </Button>
@@ -181,7 +184,7 @@ const SessionDetailPage = () => {
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
-            {isTutor && (
+            {(isTutor || isAdmin) && (
               <StudentInput
                 sessionId={Number(id)}
                 onSubmitSuccess={onGetStudents}
@@ -203,7 +206,7 @@ const SessionDetailPage = () => {
                       <div>{student?.name}</div>
                       <div className="color-light">ID: {student?.id}</div>
                       <div className="color-light">Email: {student?.email}</div>
-                      {isTutor && (
+                      {(isTutor || isAdmin) && (
                         <div className="attend-buttons">
                           <Button
                             className="attend-button"

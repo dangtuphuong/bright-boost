@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
-import navLogo from "../images/navLogo.png"
+import navLogo from "../images/navLogo.png";
 
 import AuthService from "../services/auth-service";
 
@@ -37,12 +37,26 @@ const NavBar = ({ children }) => {
       <Container>
         <Navbar data-bs-theme="dark" expand="lg" className="bg-body-tertiary">
           <Container>
-          <Navbar.Brand href="/"> 
-                <img src={navLogo} width="150" className="d-inline-block align-top" alt="Bright Boost"/>
-          </Navbar.Brand>
+            <Navbar.Brand href="/">
+              <img
+                src={navLogo}
+                width="150"
+                className="d-inline-block align-top"
+                alt="Bright Boost"
+              />
+            </Navbar.Brand>
             <Nav className="me-auto navMenu">
-              <Nav.Link href="/" className="btn btn-primary">Home</Nav.Link>
-              <Nav.Link href="/sessions" className="btn btn-primary">Sessions</Nav.Link>
+              <Nav.Link href="/" className="btn btn-primary">
+                Home
+              </Nav.Link>
+              <Nav.Link href="/sessions" className="btn btn-primary">
+                Sessions
+              </Nav.Link>
+              {currentUser?.role === "admin" && (
+                <Nav.Link href="/report" className="btn btn-primary">
+                  Report
+                </Nav.Link>
+              )}
             </Nav>
             {currentUser ? (
               <Nav>

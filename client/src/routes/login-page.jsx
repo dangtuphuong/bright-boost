@@ -7,7 +7,7 @@ import Spinner from "react-bootstrap/Spinner";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
 import heroImg from "../images/hero-img.png";
-import logoImg from "../images/logo-img.png"
+import logoImg from "../images/logo-img.png";
 
 import "./login-page.scss";
 
@@ -16,6 +16,7 @@ const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const ROLES = [
   { label: "Student", value: "student" },
   { label: "Tutor", value: "tutor" },
+  { label: "Admin", value: "admin" },
 ];
 
 export default function LoginPage() {
@@ -48,11 +49,11 @@ export default function LoginPage() {
     <div className="container">
       <div className="row">
         <div className="col d-flex flex-column justify-content-center align-items-center">
-          <img className="heroImg" src={heroImg}/>
+          <img className="heroImg" src={heroImg} />
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
-        <img className="logoImg" src={logoImg}/>
-          <div>           
+          <img className="logoImg" src={logoImg} />
+          <div>
             <Form className="formWrap">
               <Form.Group className="mb-4" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
