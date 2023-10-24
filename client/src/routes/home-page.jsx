@@ -38,7 +38,8 @@ const HomePage = () => {
                 <Session
                   session={item}
                   onStartSession={
-                    currentUser?.role === "tutor" && onStartSession
+                    ["tutor", "admin"]?.includes(currentUser?.role) &&
+                    onStartSession
                   }
                 />
               </div>

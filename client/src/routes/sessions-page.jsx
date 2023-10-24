@@ -43,6 +43,7 @@ const SessionsPage = () => {
                 <Session
                   session={session}
                   hasProgressBar
+                  isAdmin={currentUser?.role === "admin"}
                   onJoinSession={onJoinSession}
                 />
               </div>
