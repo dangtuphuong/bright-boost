@@ -1,6 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
 import DataService from '../services/data-service';
-import session from '../components/Session';
 import DatePicker from 'react-datepicker';
 import moment from 'moment/moment';
 
