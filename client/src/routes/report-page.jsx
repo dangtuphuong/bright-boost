@@ -11,7 +11,7 @@ const ReportPage = () => {
   return (
     <NavBar>
       <div className="container">
-        <div className="row">
+        <div>
           <h2 className="mb-4 mt-2">Report</h2>
           <Tabs
             onSelect={setTab}

@@ -102,7 +102,7 @@ const AdminStudentPage = () => {
 
     return (
         <div className="d-flex justify-content-center">
-            <div className="w-75">
+            <div className="w-100">
                 <h2 className="font-bg">Students Attendant</h2>
                 <div className="d-flex justify-content-end">
                     <button type="button" onClick={() => filterDispatch({type: 'FILTER', state: !filter.isFiltered})} className={`btn border ${!filter.isFiltered ? 'bg-light text-primary' : 'bg-primary text-light'}`}>Filter</button>
@@ -110,9 +110,6 @@ const AdminStudentPage = () => {
                 <div className={`${!filter.isFiltered ? 'd-none' : ''} py-1`}>
                     <div className="d-flex border rounded px-2 py-3">
                         <div className={`w-25`}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Session ID</div>
                             <div className="w-50 border rounded px-2 py-2 m-0">
                                 <input
                                     type="text"
@@ -125,9 +122,6 @@ const AdminStudentPage = () => {
                             </div>
                         </div>
                         <div className={`w-25`}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Student ID</div>
                             <div className="w-50 border rounded px-2 py-2 m-0">
                                 <input
                                     type="text"
@@ -140,9 +134,6 @@ const AdminStudentPage = () => {
                             </div>
                         </div>
                         <div className={`w-25`}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Date</div>
                             <div className="w-75 d-flex align-items-center justify-content-between border rounded px-2 py-2 m-0">
                                 <DatePicker
                                     selected={date}
@@ -153,9 +144,6 @@ const AdminStudentPage = () => {
                             </div>
                         </div>
                         <div className={`w-25`}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Marked</div>
                             <div className="w-50 border rounded px-2 py-2 m-0">
                                 <select
                                     onChange={handleMarkFilterInputChange}
@@ -172,24 +160,22 @@ const AdminStudentPage = () => {
                 <table className="table w-full">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Student ID</th>
                             <th scope="col">Student Name</th>
                             <th scope="col">Session ID</th>
                             <th scope="col">Time Attend</th>
-                            <th scope="col">Tutor Mark</th>
+                            <th scope="col">Attended?</th>
                         </tr>
                     </thead>
                     <tbody>
                         { filter.attendant.length > 0 && 
                             filter.attendant.map((_attendant, i) => 
                                 <tr key={i}>
-                                    <td>{i}</td>
                                     <td>{_attendant.studentId}</td>
                                     <td>{_attendant.student.name}</td>
                                     <td>{_attendant.sessionId}</td>
                                     <td>{convertUnixTime(_attendant.time_attend)}</td>
-                                    <td>{_attendant.tutor_mark === 1 ? "YES" : "NO"}</td>
+                                    <td>{_attendant.tutor_mark === 1 ? "Yes" : "No"}</td>
                                 </tr>
                             )
                         }

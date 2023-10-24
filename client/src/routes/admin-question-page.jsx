@@ -123,7 +123,7 @@ const AdminQuestionPage = () => {
 
     return (
         <div className={`d-flex justify-content-center`}>
-            <div className={`w-75`}>
+            <div className={`w-100`}>
                 <div className={`flex justify-content-start`}>
                     <h2 className="font-bg">Questions</h2>
                 </div>
@@ -133,9 +133,6 @@ const AdminQuestionPage = () => {
                 <div className={`${!filter.isFiltered ? 'd-none' : ''} py-1`}>
                     <div className={"d-flex border rounded px-2 py-3"}>
                         <div className={``}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Session ID</div>
                             <div className="w-75 border rounded px-2 py-2 m-0">
                                 <input
                                     type="text"
@@ -148,9 +145,6 @@ const AdminQuestionPage = () => {
                             </div>
                         </div>
                         <div className={``}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Student ID</div>
                             <div className="w-75 border rounded px-2 py-2 m-0">
                                 <input
                                     type="text"
@@ -163,9 +157,6 @@ const AdminQuestionPage = () => {
                             </div>
                         </div>
                         <div className={``}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Subject</div>
                             <div className="w-75 border rounded px-2 py-2 m-0">
                                 <input
                                     type="text"
@@ -178,9 +169,6 @@ const AdminQuestionPage = () => {
                             </div>
                         </div>
                         <div className={``}>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Is Answered?</div>
                             <div className="w-75 border rounded px-2 py-2 m-0">
                                 <select
                                     onChange={handleAnsweredFilterInputChange}
@@ -195,9 +183,6 @@ const AdminQuestionPage = () => {
                         </div>
                         { filter.isAnswered >= 1 &&
                             <div className={``}>
-                                <div
-                                    className={`btn border bg-primary text-light`}
-                                >Tutor ID</div>
                                 <div className="w-75 border rounded px-2 py-2 m-0">
                                     <input
                                         type="text"
@@ -211,9 +196,6 @@ const AdminQuestionPage = () => {
                             </div>
                         }
                         <div>
-                            <div
-                                className={`btn border bg-primary text-light`}
-                            >Date</div>
                             <div className="w-75 d-flex align-items-center justify-content-between border rounded px-2 py-2 m-0">
                                 <DatePicker
                                     selected={date}
@@ -228,7 +210,6 @@ const AdminQuestionPage = () => {
                 <table className="table w-full">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Student ID</th>
                         <th scope="col">Student Name</th>
                         <th scope="col">Subject</th>
@@ -236,7 +217,7 @@ const AdminQuestionPage = () => {
                         <th scope="col">Tutor ID</th>
                         <th scope="col">Tutor Name</th>
                         <th scope="col">Session ID</th>
-                        <th scope="col">Is Answered</th>
+                        <th scope="col">Answered?</th>
                         <th scope="col">Date</th>
                     </tr>
                     </thead>
@@ -244,7 +225,6 @@ const AdminQuestionPage = () => {
                     { filter.question.length > 0 &&
                         filter.question.map((_question, i) =>
                             <tr key={i}>
-                                <td>{i}</td>
                                 <td>{_question.studentId}</td>
                                 <td>{_question.student.name}</td>
                                 <td>{_question.subject.name}</td>
@@ -252,7 +232,7 @@ const AdminQuestionPage = () => {
                                 <td>{_question.tutor !== null ? _question.tutor.id : ''}</td>
                                 <td>{_question.tutor !== null ? _question.tutor.name : ''}</td>
                                 <td>{_question.sessionId}</td>
-                                <td>{_question.is_answered === 0 ? 'NO' : _question.is_answered === 1 ? 'IS ANSWERING' : 'YES'}</td>
+                                <td>{_question.is_answered === 0 ? 'No' : _question.is_answered === 1 ? 'Answering' : 'Yes'}</td>
                                 <td>{convertUnixTime(_question.time_publish)}</td>
                             </tr>
                         )
