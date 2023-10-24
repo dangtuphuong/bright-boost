@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import DataService from "../services/data-service";
 import DatePicker from "react-datepicker";
-import moment from "moment/moment";
+import moment from "moment";
 
 import "./table.scss";
 
