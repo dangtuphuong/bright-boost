@@ -88,7 +88,6 @@ router.post('/mark', async function (req, res, next) {
                 }
             }
         });
-        console.log(attend)
 
         if (!attend) {
             throw new Error("No such attendant found")
