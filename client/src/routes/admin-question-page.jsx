@@ -127,13 +127,13 @@ const AdminQuestionPage = () => {
                   />
                 </div>
               </th>
-              <th scope="col">
+              <th scope="col" className="content-cell">
                 <div className="header-cell">
-                  Content
+                  Question
                   <input
                     type="text"
                     className="form-control filter-item"
-                    placeholder="Content"
+                    placeholder="Question"
                     value={filterObj?.content}
                     onChange={handleContentFilterInputChange}
                   />
@@ -181,21 +181,30 @@ const AdminQuestionPage = () => {
             </tr>
           </thead>
           <tbody>
-            {filterData.length > 0 &&
+            {filterData.length > 0 ? (
               filterData.map((_question, i) => (
                 <tr key={i}>
-                  <td>{_question.student.name}</td>
-                  <td>{_question.subject.name}</td>
+                  <td className="text-center">{_question.student.name}</td>
+                  <td className="text-center">{_question.subject.name}</td>
                   <td>{_question.content}</td>
-                  <td>
+                  <td className="text-center">
                     {moment(_question.time_publish).format("dddd, DD-MM-YYYY")}
                   </td>
-                  <td>{_question.is_answered === 1 ? "Yes" : "No"}</td>
-                  <td>
+                  <td className="text-center">
+                    {_question.is_answered === 1 ? "Yes" : "No"}
+                  </td>
+                  <td className="text-center">
                     {_question.tutor !== null ? _question.tutor.name : ""}
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td className="text-center" colSpan="6">
+                  No result found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>

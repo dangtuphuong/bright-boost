@@ -12,7 +12,7 @@ const ReportPage = () => {
     <NavBar>
       <div className="container">
         <div>
-          <h2 className="mb-4 mt-2">Report</h2>
+          <h2 className="mb-4 mt-4">Report</h2>
           <Tabs
             onSelect={setTab}
             defaultActiveKey={tab}

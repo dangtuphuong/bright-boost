@@ -152,7 +152,7 @@ const AdminStudentPage = () => {
             </tr>
           </thead>
           <tbody>
-            {filterData?.length > 0 &&
+            {filterData?.length > 0 ? (
               filterData.map((_attendant, i) => (
                 <tr key={i}>
                   <td className="text-center">{_attendant?.studentId}</td>
@@ -165,7 +165,14 @@ const AdminStudentPage = () => {
                     {_attendant?.tutor_mark === 1 ? "Yes" : "No"}
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td className="text-center" colSpan="5">
+                  No result found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
