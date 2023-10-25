@@ -1,13 +1,23 @@
 # Bright Boost
-Bright Boost App by Group 15 Swinburne 2023-HS2-COS60010
+Bright Boost App by Group 15 Swinburne 2023-HS2-COS60010\
+Adnan Ahmed – 104511315\
+Arief Frima Saipul – 104196233\
+Tu Phuong Dang – 103814482\
+Vu Hoang Nam Dao – 104474191
 
-## Run Client
+## Quick guide
+There are 2 ways to run the application locally
+
+### Option 1
+Run client and server separately
+#### Run Client
 cd client\
 npm start
 
-## Run Server
+#### Run Server
 cd server\
-npm run dev or npm run start
+npm run start
 
-## Run Concurrently Client & Server
+### Option 2
+#### Run Concurrently Client & Server
 npm run dev

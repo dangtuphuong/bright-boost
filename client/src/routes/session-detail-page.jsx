@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import moment from "moment";
 
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
@@ -30,19 +31,25 @@ const SessionDetailPage = () => {
 
   const currentUser = useMemo(() => AuthService.getCurrentUser(), []);
   const isTutor = currentUser?.role === "tutor";
+  const isAdmin = currentUser?.role === "admin";
 
   useEffect(() => {
     onGetStudents();
     onGetQuestions();
-    DataService.getAvailableSessions().then((data) =>
-      setSubjects(
-        data?.data
-          ?.find((s) => s.id == id)
-          ?.TutorDetails?.map(({ tutor }) => tutor?.SubjectDetails)
-          ?.map((s) => s?.map(({ subject }) => subject))
-          ?.flat()
-      )
-    );
+    DataService.getAvailableSessions().then((data) => {
+      const filter = data?.data
+        ?.find((s) => s.id == id)
+        ?.TutorDetails?.map(({ tutor }) => tutor?.SubjectDetails)
+        ?.map((s) => s?.map(({ subject }) => subject))
+        ?.flat();
+      let result = [];
+      for (let i in filter) {
+        if (result?.findIndex((item) => item?.id === filter[i]?.id) < 0) {
+          result = [...result, filter[i]];
+        }
+      }
+      setSubjects(result);
+    });
   }, []);
 
   const onGetStudents = () => {
@@ -157,10 +164,12 @@ const SessionDetailPage = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="mb-3 mt-4">Session ID: {id}</h2>
           <div>
-            <Button variant="warning" onClick={onLeaveSession}>
-              {leaving ? "Leaving" : "Leave Session"}
-            </Button>
-            {isTutor && (
+            {!isAdmin && (
+              <Button variant="warning" onClick={onLeaveSession}>
+                {leaving ? "Leaving" : "Leave Session"}
+              </Button>
+            )}
+            {(isTutor || isAdmin) && (
               <Button className="ms-3" variant="danger" onClick={onEndSession}>
                 {ending ? "Ending" : "End Session"}
               </Button>
@@ -176,7 +185,7 @@ const SessionDetailPage = () => {
         <div className="row mb-4">
           <div className="col-4 gx-5">
             <h4 className="mb-4 text-center">Student List</h4>
-            {isTutor && (
+            {(isTutor || isAdmin) && (
               <StudentInput
                 sessionId={Number(id)}
                 onSubmitSuccess={onGetStudents}
@@ -198,7 +207,7 @@ const SessionDetailPage = () => {
                       <div>{student?.name}</div>
                       <div className="color-light">ID: {student?.id}</div>
                       <div className="color-light">Email: {student?.email}</div>
-                      {isTutor && (
+                      {(isTutor || isAdmin) && (
                         <div className="attend-buttons">
                           <Button
                             className="attend-button"
@@ -267,7 +276,16 @@ const SessionDetailPage = () => {
                         <div className="d-flex justify-content-between">
                           <div className="color-light">{`From ${question?.student?.name}`}</div>
                           {question?.tutor?.name && (
-                            <div className="color-light">{`Answered by ${question?.tutor?.name}`}</div>
+                            <div className="color-light">{`Answered by ${
+                              question?.tutor?.name
+                            }${
+                              question.time_start && question.time_end
+                                ? ` (${moment(question.time_end).diff(
+                                    moment(question.time_start),
+                                    "seconds"
+                                  )}s)`
+                                : ""
+                            }`}</div>
                           )}
                         </div>
                         {!!question?.is_answered && (

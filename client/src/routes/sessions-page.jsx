@@ -32,8 +32,8 @@ const SessionsPage = () => {
   return (
     <NavBar>
       <div className="container">
-        <h2 className="mb-4 mt-4">Active Sessions</h2>
         <div className="d-flex flex-column justify-content-center align-items-center">
+          <h2 className="mb-4 mt-4">Active Sessions</h2>
           {loading ? (
             <Spinner animation="border" />
           ) : sessions?.length ? (
@@ -43,6 +43,7 @@ const SessionsPage = () => {
                 <Session
                   session={session}
                   hasProgressBar
+                  isAdmin={currentUser?.role === "admin"}
                   onJoinSession={onJoinSession}
                 />
               </div>

@@ -7,7 +7,7 @@ import Spinner from "react-bootstrap/Spinner";
 import AuthService from "../services/auth-service";
 import { toast } from "../components/Toast";
 import heroImg from "../images/hero-img.png";
-import logoImg from "../images/logo-img.png"
+import logoImg from "../images/logo-img.png";
 
 import "./login-page.scss";
 
@@ -16,6 +16,7 @@ const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const ROLES = [
   { label: "Student", value: "student" },
   { label: "Tutor", value: "tutor" },
+  { label: "Admin", value: "admin" },
 ];
 
 export default function LoginPage() {

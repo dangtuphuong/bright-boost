@@ -27,27 +27,24 @@ const HomePage = () => {
   return (
     <NavBar>
       <div className="container">
-        <div className="row">
-          <div className="col-8">
-            <h2 className="mb-4 mt-4">Timetable</h2>
-            <div className="d-flex flex-column justify-content-center align-items-center">
-              {loading ? (
-                <Spinner animation="border" />
-              ) : (
-                timetable?.map((item) => (
-                  <div key={item?.id} className="mb-3 w-100">
-                    <h5 className="mb-3">{item?.date}</h5>
-                    <Session
-                      session={item}
-                      onStartSession={
-                        currentUser?.role === "tutor" && onStartSession
-                      }
-                    />
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+        <div className="d-flex flex-column justify-content-center align-items-center">
+          <h2 className="mb-4 mt-4">Timetable</h2>
+          {loading ? (
+            <Spinner animation="border" />
+          ) : (
+            timetable?.map((item) => (
+              <div key={item?.id} className="mb-3 w-75">
+                <h5 className="mb-3">{item?.date}</h5>
+                <Session
+                  session={item}
+                  onStartSession={
+                    ["tutor", "admin"]?.includes(currentUser?.role) &&
+                    onStartSession
+                  }
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </NavBar>

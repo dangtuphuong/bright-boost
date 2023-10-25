@@ -3,6 +3,7 @@ import Session from "../model/Session";
 import Tutor from "../model/Tutor";
 import Student from "../model/Student";
 import Attendant from "../model/Attendant";
+import SessionStartEnd from "../model/SessionStartEnd";
 
 const router = express.Router();
 const { Op } = require('sequelize');
@@ -54,6 +55,11 @@ router.post('/start', async function (req, res, next) {
         } else {
             session.status = 1;
             session.save();
+            await SessionStartEnd.create({
+                sessionId,
+                day: Date.now(),
+                type: 0
+            });
             res.status(200).json('Done!');
         }
 
@@ -85,7 +91,12 @@ router.post('/end', async function (req, res, next) {
             students.map(function(student) {
                 student.sessionId = 0;
                 student.save();
-            })
+            });
+            await SessionStartEnd.create({
+                sessionId,
+                day: Date.now(),
+                type: 1
+            });
             res.status(200).json('Done!');
         }
 

@@ -24,7 +24,8 @@ const Icon = memo(() => (
 const Session = ({
   className,
   session,
-  hasProgressBar,
+  isAdmin = false,
+  hasProgressBar = false,
   onJoinSession = null,
   onStartSession = null,
 }) => {
@@ -111,7 +112,7 @@ const Session = ({
                 {starting ? "Starting..." : "Start"}
               </Button>
             )}
-            {onJoinSession && (
+            {onJoinSession && !isAdmin && (
               <Button
                 className={classNames("register-button", {
                   loading: loading,
@@ -120,6 +121,15 @@ const Session = ({
                 onClick={(e) => handleJoin(e, session?.id)}
               >
                 {loading ? "Joining..." : "Join"}
+              </Button>
+            )}
+            {isAdmin && (
+              <Button
+                className="register-button"
+                variant="outline-primary"
+                onClick={() => navigate(`/sessions/${session?.id}`)}
+              >
+                View
               </Button>
             )}
           </div>
