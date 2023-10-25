@@ -26,7 +26,7 @@ const ReportPage = () => {
             <Tab eventKey="questions" title="Questions">
               <QuestionTable />
             </Tab>
-            <Tab eventKey="charts" title="Charts">
+            <Tab eventKey="visualisation" title="Visualisation">
               <Charts />
             </Tab>
           </Tabs>

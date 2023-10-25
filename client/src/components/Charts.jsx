@@ -10,7 +10,7 @@ import "./Charts.scss";
 
 Chart.register(CategoryScale);
 
-const colors = ["#FFB6C1", "#ADD8E6", "#77DD77", "#FFD700", "#9370DB"];
+const colors = ["#4bc0c0", "#FFB6C1", "#77DD77", "#FFD700", "#9370DB"];
 
 const labels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -79,6 +79,7 @@ const Charts = () => {
             ).length
         ),
         backgroundColor: colors[i],
+        barThickness: 50,
       })),
     }),
     [questions?.length, labels?.length]
@@ -88,7 +89,7 @@ const Charts = () => {
     <div className={`w-100`}>
       <div className="d-flex justify-content-between">
         <div className="w-50 chart-left">
-          <h4 className="mt-4">Weekly Attendance</h4>
+          <h4 className="mt-4 mb-4">Weekly Attendance</h4>
           <Line
             data={attendanceData}
             options={{
