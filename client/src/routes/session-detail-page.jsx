@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import moment from "moment";
 
 import NavBar from "../components/NavBar";
 import QuestionInput from "../components/QuestionInput";
@@ -275,7 +276,16 @@ const SessionDetailPage = () => {
                         <div className="d-flex justify-content-between">
                           <div className="color-light">{`From ${question?.student?.name}`}</div>
                           {question?.tutor?.name && (
-                            <div className="color-light">{`Answered by ${question?.tutor?.name}`}</div>
+                            <div className="color-light">{`Answered by ${
+                              question?.tutor?.name
+                            }${
+                              question.time_start && question.time_end
+                                ? ` (${moment(question.time_end).diff(
+                                    moment(question.time_start),
+                                    "seconds"
+                                  )}s)`
+                                : ""
+                            }`}</div>
                           )}
                         </div>
                         {!!question?.is_answered && (
