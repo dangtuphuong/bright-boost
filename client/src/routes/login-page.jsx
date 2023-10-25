@@ -49,11 +49,13 @@ export default function LoginPage() {
     <div className="container">
       <div className="row">
         <div className="col d-flex flex-column justify-content-center align-items-center">
-          <img className="heroImg" src={heroImg} />
+        <a href="https://storyset.com/illustration/college-class/rafiki" target="_blank">
+          <img className="heroImg" src={heroImg}/>
+        </a>
         </div>
         <div className="col d-flex flex-column justify-content-center align-items-center loginForm">
-          <img className="logoImg" src={logoImg} />
-          <div>
+          <img className="logoImg" src={logoImg}/>
+          <div>           
             <Form className="formWrap">
               <Form.Group className="mb-4" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
