@@ -1,7 +1,7 @@
 import express from "express";
 import Student from "../model/Student";
 import Tutor from "../model/Tutor";
-import Admin from "./Admin";
+import Admin from "../model/Admin";
 
 const router = express.Router();
 
